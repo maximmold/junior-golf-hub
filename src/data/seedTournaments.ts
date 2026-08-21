@@ -240,8 +240,12 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-19',
     duration: '1-Day',
     entryFee: 30,
-    playerRegistrations: { 'player-owen': 'open' },
+    registrationUrl: 'https://www.scjga.org',
+    playerRegistrations: {
+      'player-owen': 'considering',
+    },
     yardageOrFormat: '18-Hole Stroke Play',
+    notes: 'Considering tournament at CC of Newberry.',
     season: 'Fall'
   },
   {
