@@ -99,6 +99,8 @@ export type DatePreset =
 
 export type FilterRegistrationStatus = 'registered' | 'contingent' | 'considering' | 'not_registered';
 
+export type SortOption = 'date' | 'deadline' | 'distance';
+
 export interface FilterState {
   tour: 'ALL' | 'USKG' | 'SCJGA';
   duration: 'ALL' | '1-Day' | '2-Day';
@@ -111,6 +113,7 @@ export interface FilterState {
   endDate?: string;
   selectedMonth?: string; // YYYY-MM for calendar filtering
   datePreset?: DatePreset;
+  sortBy?: SortOption; // 'date' (default) | 'deadline' | 'distance'
 }
 
 export type ViewMode = 'timeline' | 'calendar' | 'map' | 'players' | 'ingest';

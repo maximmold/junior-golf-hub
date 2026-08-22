@@ -211,7 +211,35 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
       }
 
       return true;
-    }).sort((a, b) => a.startDate.localeCompare(b.startDate));
+    }).sort((a, b) => {
+      if (filters.sortBy === 'deadline') {
+        const aDeadline = a.registrationDeadline;
+        const bDeadline = b.registrationDeadline;
+
+        if (aDeadline && bDeadline) {
+          if (aDeadline !== bDeadline) {
+            return aDeadline.localeCompare(bDeadline);
+          }
+          return a.startDate.localeCompare(b.startDate);
+        }
+        if (aDeadline && !bDeadline) return -1;
+        if (!aDeadline && bDeadline) return 1;
+
+        return a.startDate.localeCompare(b.startDate);
+      }
+
+      if (filters.sortBy === 'distance') {
+        const aEta = calculateDistanceAndETA(userLocation, a.course, filters.selectedPlayerId);
+        const bEta = calculateDistanceAndETA(userLocation, b.course, filters.selectedPlayerId);
+        if (aEta.distanceMiles !== bEta.distanceMiles) {
+          return aEta.distanceMiles - bEta.distanceMiles;
+        }
+        return a.startDate.localeCompare(b.startDate);
+      }
+
+      // Default: Chronological by event start date
+      return a.startDate.localeCompare(b.startDate);
+    });
   }, [tournaments, filters, todayStr, players, userLocation]);
 
   // Overall Statistics

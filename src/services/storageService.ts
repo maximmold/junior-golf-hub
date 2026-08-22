@@ -24,6 +24,7 @@ export const DEFAULT_FILTERS: FilterState = {
   onlyUpcoming: true,
   maxDriveMinutes: undefined,
   searchQuery: '',
+  sortBy: 'date',
 };
 
 export function loadTournaments(): Tournament[] {

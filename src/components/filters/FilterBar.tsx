@@ -369,6 +369,46 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             </button>
           </div>
 
+          {/* 5. Sort By Option */}
+          <div className="flex flex-wrap items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 gap-1">
+            <span className="text-[10px] uppercase font-bold text-amber-400 px-1.5 flex items-center gap-1">
+              <span>Sort:</span>
+            </span>
+            <button
+              onClick={() => setFilters((prev) => ({ ...prev, sortBy: 'date' }))}
+              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
+                (!filters.sortBy || filters.sortBy === 'date')
+                  ? 'bg-slate-700 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+              title="Sort by Event Date (Chronological)"
+            >
+              📅 Date
+            </button>
+            <button
+              onClick={() => setFilters((prev) => ({ ...prev, sortBy: 'deadline' }))}
+              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                filters.sortBy === 'deadline'
+                  ? 'bg-amber-600 text-white shadow-md ring-1 ring-amber-400 font-bold'
+                  : 'text-amber-400 hover:bg-amber-950/40 hover:text-amber-300'
+              }`}
+              title="Sort by Sign-Up Deadline (Soonest first)"
+            >
+              <span>⏰ Deadline</span>
+            </button>
+            <button
+              onClick={() => setFilters((prev) => ({ ...prev, sortBy: 'distance' }))}
+              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                filters.sortBy === 'distance'
+                  ? 'bg-emerald-600 text-white shadow-md ring-1 ring-emerald-400 font-bold'
+                  : 'text-emerald-400 hover:bg-emerald-950/40 hover:text-emerald-300'
+              }`}
+              title="Sort by Driving Distance (Closest first)"
+            >
+              <span>🚗 Distance</span>
+            </button>
+          </div>
+
           {/* Matches Count & Reset Filter */}
           <div className="flex items-center gap-3 text-xs ml-auto py-1">
             <span className="text-slate-400 font-medium whitespace-nowrap">

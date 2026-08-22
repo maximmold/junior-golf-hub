@@ -70,6 +70,39 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
   const isUSKG = tournament.tour === 'USKG';
   const is2Day = tournament.duration === '2-Day';
 
+  // Format registration deadline
+  let deadlineFormatted = '';
+  let deadlineStatusText = '';
+  let deadlineBadgeStyle = '';
+  if (tournament.registrationDeadline) {
+    try {
+      const deadlineDateObj = parseISO(tournament.registrationDeadline);
+      deadlineFormatted = format(deadlineDateObj, 'EEE, MMM d');
+      const daysUntilDeadline = differenceInCalendarDays(deadlineDateObj, new Date());
+
+      if (daysUntilDeadline < 0) {
+        deadlineStatusText = `🔒 Reg Closed (${deadlineFormatted})`;
+        deadlineBadgeStyle = 'bg-slate-950/80 text-slate-500 border-slate-800';
+      } else if (daysUntilDeadline === 0) {
+        deadlineStatusText = `🚨 Reg Closes Today!`;
+        deadlineBadgeStyle = 'bg-rose-950/90 text-rose-300 border-rose-500/80 animate-pulse';
+      } else if (daysUntilDeadline === 1) {
+        deadlineStatusText = `⚡ Closes Tomorrow (${deadlineFormatted})`;
+        deadlineBadgeStyle = 'bg-amber-950/90 text-amber-300 border-amber-500/80 font-bold';
+      } else if (daysUntilDeadline <= 5) {
+        deadlineStatusText = `⏰ Closes in ${daysUntilDeadline}d (${deadlineFormatted})`;
+        deadlineBadgeStyle = 'bg-amber-950/80 text-amber-300 border-amber-500/60 font-semibold';
+      } else {
+        deadlineStatusText = `⏰ Reg Deadline: ${deadlineFormatted}`;
+        deadlineBadgeStyle = 'bg-slate-950/80 text-emerald-300 border-emerald-500/40';
+      }
+    } catch {
+      deadlineFormatted = tournament.registrationDeadline;
+      deadlineStatusText = `⏰ Deadline: ${tournament.registrationDeadline}`;
+      deadlineBadgeStyle = 'bg-slate-950/80 text-slate-300 border-slate-700';
+    }
+  }
+
   const handleExportSingle = (e: React.MouseEvent) => {
     e.stopPropagation();
     const icsContent = generateICalendar([tournament], players);
@@ -108,6 +141,13 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
           }`}>
             {tournament.duration === '2-Day' ? '🏆 2-Day Event' : '⚡ 1-Day Event'}
           </span>
+
+          {/* Sign-Up Deadline Badge */}
+          {deadlineStatusText && (
+            <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-lg border shadow-sm ${deadlineBadgeStyle}`}>
+              {deadlineStatusText}
+            </span>
+          )}
 
           {tournament.isTourChampionship && (
             <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">

@@ -21,7 +21,7 @@ import {
   Car,
   Flag
 } from 'lucide-react';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, differenceInCalendarDays } from 'date-fns';
 
 interface TournamentDrawerProps {
   tournament: Tournament | null;
@@ -61,6 +61,19 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
     formattedDate = tournament.startDate;
   }
 
+  // Registration Deadline info
+  let deadlineFormatted = '';
+  let daysUntilDeadline: number | null = null;
+  if (tournament.registrationDeadline) {
+    try {
+      const deadlineDateObj = parseISO(tournament.registrationDeadline);
+      deadlineFormatted = format(deadlineDateObj, 'EEEE, MMMM d, yyyy');
+      daysUntilDeadline = differenceInCalendarDays(deadlineDateObj, new Date());
+    } catch {
+      deadlineFormatted = tournament.registrationDeadline;
+    }
+  }
+
   const handleExportICal = () => {
     const ics = generateICalendar([tournament], players);
     downloadFile(ics, `${tournament.name.replace(/[^a-z0-9]/gi, '_')}.ics`, 'text/calendar;charset=utf-8');
@@ -83,7 +96,7 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
         
         {/* Drawer Header */}
         <div className="p-5 border-b border-slate-800 bg-slate-950/80 sticky top-0 z-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border ${
               isUSKG
                 ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60'
@@ -144,6 +157,38 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
                 <span className="text-xs text-slate-400 font-normal">({eta.distanceMiles} mi)</span>
               </div>
             </div>
+
+            {/* Registration Deadline Card */}
+            {deadlineFormatted && (
+              <div className="col-span-2 bg-gradient-to-r from-amber-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-amber-500/30 flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
+                    <Clock className="w-4 h-4" />
+                    <span>Registration Deadline</span>
+                  </div>
+                  <div className="text-sm font-extrabold text-white">{deadlineFormatted}</div>
+                </div>
+                {daysUntilDeadline !== null && (
+                  <span className={`text-xs font-extrabold px-3 py-1 rounded-xl border ${
+                    daysUntilDeadline < 0
+                      ? 'bg-slate-900 text-slate-500 border-slate-800'
+                      : daysUntilDeadline === 0
+                      ? 'bg-rose-950 text-rose-300 border-rose-500 animate-pulse'
+                      : daysUntilDeadline <= 5
+                      ? 'bg-amber-950 text-amber-300 border-amber-500'
+                      : 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
+                  }`}>
+                    {daysUntilDeadline < 0
+                      ? 'Closed'
+                      : daysUntilDeadline === 0
+                      ? '🚨 Closes Today!'
+                      : daysUntilDeadline === 1
+                      ? '⚡ Closes Tomorrow'
+                      : `⏳ In ${daysUntilDeadline} days`}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Turn-by-Turn Navigation Launchers */}
