@@ -91,23 +91,25 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
         }
       }
 
-      // 4. Registration status filter
-      if (filters.registrationStatus !== 'ALL') {
+      // 4. Registration status filter (Supports Multi-Select)
+      if (filters.selectedStatuses && filters.selectedStatuses.length > 0) {
         const targetPlayerId = filters.selectedPlayerId;
+        
+        const isStatusMatching = (rawStatus: string | undefined): boolean => {
+          const status = rawStatus || 'not_registered';
+          if (filters.selectedStatuses.includes(status as any)) return true;
+          if (status === 'open' && filters.selectedStatuses.includes('not_registered')) return true;
+          return false;
+        };
+
         if (targetPlayerId !== 'ALL') {
-          const status = t.playerRegistrations[targetPlayerId] || 'not_registered';
-          if (filters.registrationStatus === 'registered' && status !== 'registered') return false;
-          if (filters.registrationStatus === 'contingent' && status !== 'contingent') return false;
-          if (filters.registrationStatus === 'considering' && status !== 'considering') return false;
-          if (filters.registrationStatus === 'not_registered' && (status === 'registered' || status === 'contingent')) return false;
+          const status = t.playerRegistrations[targetPlayerId];
+          if (!isStatusMatching(status)) return false;
         } else {
-          // If viewing ALL players, check if ANY player matches the registration status
+          // If viewing ALL players, check if ANY player matches any of the selected registration statuses
           const hasMatchingPlayer = players.some((p) => {
-            const status = t.playerRegistrations[p.id] || 'not_registered';
-            if (filters.registrationStatus === 'registered') return status === 'registered';
-            if (filters.registrationStatus === 'contingent') return status === 'contingent';
-            if (filters.registrationStatus === 'considering') return status === 'considering';
-            return status !== 'registered' && status !== 'contingent';
+            const status = t.playerRegistrations[p.id];
+            return isStatusMatching(status);
           });
           if (!hasMatchingPlayer) return false;
         }

@@ -73,20 +73,28 @@ export function App() {
     setFilters((prev) => ({ ...prev, selectedPlayerId: id }));
   };
 
-  // Quick filter to signed up
+  // Quick filter to signed up (toggles 'registered' in selectedStatuses)
   const handleFilterSignedUpOnly = () => {
-    setFilters((prev) => ({
-      ...prev,
-      registrationStatus: prev.registrationStatus === 'registered' ? 'ALL' : 'registered',
-    }));
+    setFilters((prev) => {
+      const current = prev.selectedStatuses || [];
+      const isOnlyRegistered = current.length === 1 && current[0] === 'registered';
+      return {
+        ...prev,
+        selectedStatuses: isOnlyRegistered ? [] : ['registered'],
+      };
+    });
   };
 
-  // Quick filter to contingent
+  // Quick filter to contingent (toggles 'contingent' in selectedStatuses)
   const handleFilterContingentOnly = () => {
-    setFilters((prev) => ({
-      ...prev,
-      registrationStatus: prev.registrationStatus === 'contingent' ? 'ALL' : 'contingent',
-    }));
+    setFilters((prev) => {
+      const current = prev.selectedStatuses || [];
+      const isOnlyContingent = current.length === 1 && current[0] === 'contingent';
+      return {
+        ...prev,
+        selectedStatuses: isOnlyContingent ? [] : ['contingent'],
+      };
+    });
   };
 
   // Full calendar export (.ics)
@@ -165,7 +173,7 @@ export function App() {
               setFilters({
                 tour: 'ALL',
                 duration: 'ALL',
-                registrationStatus: 'ALL',
+                selectedStatuses: [],
                 selectedPlayerId: 'ALL',
                 onlyUpcoming: true,
                 maxDriveMinutes: undefined,

@@ -3,10 +3,10 @@ import { SEED_TOURNAMENTS, DEFAULT_PLAYERS } from '../data/seedTournaments';
 import { DEFAULT_USER_LOCATIONS } from '../data/courses';
 
 const STORAGE_KEYS = {
-  TOURNAMENTS: 'charleston_golf_tournaments_v9',
-  PLAYERS: 'charleston_golf_players_v9',
-  USER_LOCATION: 'charleston_golf_location_v9',
-  FILTERS: 'charleston_golf_filters_v9',
+  TOURNAMENTS: 'charleston_golf_tournaments_v10',
+  PLAYERS: 'charleston_golf_players_v10',
+  USER_LOCATION: 'charleston_golf_location_v10',
+  FILTERS: 'charleston_golf_filters_v10',
 };
 
 export const DEFAULT_LOCATION: UserLocation = {
@@ -19,7 +19,7 @@ export const DEFAULT_LOCATION: UserLocation = {
 export const DEFAULT_FILTERS: FilterState = {
   tour: 'ALL',
   duration: 'ALL',
-  registrationStatus: 'ALL',
+  selectedStatuses: [],
   selectedPlayerId: 'ALL',
   onlyUpcoming: true,
   maxDriveMinutes: undefined,
@@ -97,7 +97,7 @@ export function saveUserLocation(location: UserLocation) {
 
 export function resetAllToDefaults(): { tournaments: Tournament[]; players: Player[]; location: UserLocation } {
   // Clear all current and legacy storage keys
-  ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9'].forEach((v) => {
+  ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10'].forEach((v) => {
     localStorage.removeItem(`charleston_golf_tournaments_${v}`);
     localStorage.removeItem(`charleston_golf_players_${v}`);
     localStorage.removeItem(`charleston_golf_location_${v}`);

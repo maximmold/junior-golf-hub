@@ -84,10 +84,12 @@ export type DatePreset =
   | 'NEXT_MONTH' 
   | 'CUSTOM';
 
+export type FilterRegistrationStatus = 'registered' | 'contingent' | 'considering' | 'not_registered';
+
 export interface FilterState {
   tour: 'ALL' | 'USKG' | 'SCJGA';
   duration: 'ALL' | '1-Day' | '2-Day';
-  registrationStatus: 'ALL' | 'registered' | 'contingent' | 'considering' | 'not_registered';
+  selectedStatuses: FilterRegistrationStatus[]; // Multi-select: empty array = All
   selectedPlayerId: 'ALL' | string;
   onlyUpcoming: boolean;
   maxDriveMinutes?: number;
