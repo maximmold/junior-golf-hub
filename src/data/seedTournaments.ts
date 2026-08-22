@@ -8,6 +8,7 @@ export const DEFAULT_PLAYERS: Player[] = [
     uskidsDivision: 'Boys 9',
     scjgaDivision: 'Boys 10-12',
     yardage: '1,850 yds (9-holes)',
+    warmupMinutes: 65, // 1h 5m arrival and warm-up buffer
     color: '#10b981', // Emerald
     avatarEmoji: '🏌️‍♂️',
     isDefault: true,
@@ -33,6 +34,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
       'player-owen': 'registered',
+    },
+    playerTeeTimes: {
+      'player-owen': '10:54',
     },
     yardageOrFormat: 'Stroke Play - 9/18 Holes by Age Group',
     notes: 'Late fee $15 Aug 19 - Aug 20. All registrations close Aug 20. Range balls included.',

@@ -59,6 +59,7 @@ export function App() {
     filters,
     setFilters,
     setPlayerRegistration,
+    setPlayerTeeTime,
     addTournament,
     updateTournament,
     deleteTournament,
@@ -284,6 +285,7 @@ export function App() {
         players={players}
         userLocation={userLocation}
         onSetRegistration={setPlayerRegistration}
+        onSetTeeTime={setPlayerTeeTime}
       />
 
     </div>

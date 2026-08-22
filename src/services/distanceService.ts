@@ -85,6 +85,85 @@ export function calculateDistanceAndETA(
 }
 
 /**
+ * Format total minutes into a clean human string (e.g. "65 mins" -> "1h 5m", "45 mins")
+ */
+export function formatMinutesDuration(totalMinutes: number): string {
+  const rounded = Math.round(totalMinutes);
+  if (rounded < 60) return `${rounded} min${rounded === 1 ? '' : 's'}`;
+  const hrs = Math.floor(rounded / 60);
+  const mins = rounded % 60;
+  if (mins === 0) return `${hrs} hr${hrs === 1 ? '' : 's'}`;
+  return `${hrs}h ${mins}m`;
+}
+
+/**
+ * Parse any time string (e.g. "10:54", "10:54 AM", "14:30", "9:00am") into minutes elapsed from midnight
+ */
+export function parseTimeToMinutesFromMidnight(timeStr: string): number | null {
+  if (!timeStr || typeof timeStr !== 'string') return null;
+  const clean = timeStr.trim().toLowerCase();
+  
+  const isPM = clean.includes('pm');
+  const isAM = clean.includes('am');
+  const numPart = clean.replace(/[a-z]/g, '').trim();
+  
+  const parts = numPart.split(':').map((p) => parseInt(p, 10));
+  if (parts.length < 2 || isNaN(parts[0]) || isNaN(parts[1])) return null;
+  
+  let hours = parts[0];
+  const minutes = parts[1];
+  
+  if (isPM && hours < 12) hours += 12;
+  if (isAM && hours === 12) hours = 0;
+  
+  return hours * 60 + minutes;
+}
+
+/**
+ * Format minutes from midnight to standard 12-hour AM/PM string (e.g. 654 -> "10:54 AM")
+ */
+export function formatMinutesToTimeString(minutesFromMidnight: number): string {
+  let normalized = Math.round(minutesFromMidnight);
+  while (normalized < 0) normalized += 24 * 60;
+  normalized = normalized % (24 * 60);
+  
+  const hours24 = Math.floor(normalized / 60);
+  const mins = normalized % 60;
+  
+  const period = hours24 >= 12 ? 'PM' : 'AM';
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+  const minsPadded = mins < 10 ? `0${mins}` : `${mins}`;
+  
+  return `${hours12}:${minsPadded} ${period}`;
+}
+
+/**
+ * Calculates departure schedule based on tee time, warm-up buffer, and driving time
+ */
+export function calculateDepartureSchedule(
+  teeTimeStr: string,
+  warmupMinutes: number = 65,
+  driveTimeMinutes: number
+) {
+  const teeTimeMinutes = parseTimeToMinutesFromMidnight(teeTimeStr);
+  if (teeTimeMinutes === null) return null;
+  
+  const targetArrivalMinutes = teeTimeMinutes - warmupMinutes;
+  const departureMinutes = targetArrivalMinutes - driveTimeMinutes;
+  
+  return {
+    teeTimeRaw: teeTimeStr,
+    teeTimeFormatted: formatMinutesToTimeString(teeTimeMinutes),
+    warmupMinutes,
+    warmupFormatted: formatMinutesDuration(warmupMinutes),
+    targetArrivalTimeFormatted: formatMinutesToTimeString(targetArrivalMinutes),
+    driveTimeMinutes,
+    driveTimeFormatted: formatMinutesDuration(driveTimeMinutes),
+    departureTimeFormatted: formatMinutesToTimeString(departureMinutes),
+  };
+}
+
+/**
  * Geocode an address using OpenStreetMap Nominatim or fallback
  */
 export async function geocodeAddress(query: string): Promise<{ lat: number; lng: number; formattedAddress: string } | null> {

@@ -66,6 +66,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   const [uskidsDivision, setUskidsDivision] = useState(US_KIDS_DIVISIONS[3]); // Boys 9
   const [scjgaDivision, setScjgaDivision] = useState(SCJGA_DIVISIONS[1]); // Boys 10-12
   const [yardage, setYardage] = useState('1,850 yds (9-holes)');
+  const [warmupMinutes, setWarmupMinutes] = useState<number>(65); // Default 1h 5m
   const [color, setColor] = useState(PRESET_COLORS[0]);
   const [avatarEmoji, setAvatarEmoji] = useState('🏌️‍♂️');
 
@@ -77,6 +78,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
     setUskidsDivision(player.uskidsDivision);
     setScjgaDivision(player.scjgaDivision);
     setYardage(player.yardage || '');
+    setWarmupMinutes(player.warmupMinutes !== undefined ? player.warmupMinutes : 65);
     setColor(player.color);
     setAvatarEmoji(player.avatarEmoji || '🏌️‍♂️');
     setIsCreating(false);
@@ -89,6 +91,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
     setUskidsDivision(US_KIDS_DIVISIONS[3]);
     setScjgaDivision(SCJGA_DIVISIONS[1]);
     setYardage('1,850 yds (9-holes)');
+    setWarmupMinutes(65);
     setColor(PRESET_COLORS[players.length % PRESET_COLORS.length]);
     setAvatarEmoji('🏌️‍♂️');
   };
@@ -103,6 +106,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         uskidsDivision,
         scjgaDivision,
         yardage,
+        warmupMinutes: Number(warmupMinutes) || 65,
         color,
         avatarEmoji,
         isDefault: players.length === 0,
@@ -114,6 +118,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         uskidsDivision,
         scjgaDivision,
         yardage,
+        warmupMinutes: Number(warmupMinutes) || 65,
         color,
         avatarEmoji,
       });
@@ -184,9 +189,13 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                       <span>•</span>
                       <span className="text-blue-400">SCJGA: {p.scjgaDivision}</span>
                     </div>
-                    {p.yardage && (
-                      <div className="text-[11px] text-slate-500 mt-0.5">📏 {p.yardage}</div>
-                    )}
+                    <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-slate-400">
+                      {p.yardage && <span>📏 {p.yardage}</span>}
+                      <span>•</span>
+                      <span className="text-emerald-400 font-semibold">
+                        ⏱️ {p.warmupMinutes !== undefined ? (p.warmupMinutes < 60 ? `${p.warmupMinutes}m` : `${Math.floor(p.warmupMinutes / 60)}h ${p.warmupMinutes % 60}m`) : '1h 5m'} warm-up
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -288,6 +297,62 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                 onChange={(e) => setYardage(e.target.value)}
                 className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
+            </div>
+
+            {/* Warm-Up / Arrival Buffer Setting */}
+            <div className="bg-slate-950/60 border border-slate-800/90 rounded-2xl p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-xs font-bold text-emerald-400">
+                    ⏱️ Pre-Round Arrival & Warm-Up Buffer
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    How long before tee time to arrive at the course (range, putting, check-in)
+                  </p>
+                </div>
+                <span className="text-xs font-black text-emerald-300 px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/30 whitespace-nowrap">
+                  {warmupMinutes < 60 ? `${warmupMinutes}m` : `${Math.floor(warmupMinutes / 60)}h ${warmupMinutes % 60}m`}
+                </span>
+              </div>
+
+              {/* Quick Warm-Up Presets */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {[
+                  { label: '30m', mins: 30 },
+                  { label: '45m', mins: 45 },
+                  { label: '1 hour', mins: 60 },
+                  { label: '1h 5m ⭐', mins: 65 },
+                  { label: '1h 15m', mins: 75 },
+                  { label: '1.5 hrs', mins: 90 },
+                ].map((preset) => (
+                  <button
+                    key={preset.mins}
+                    type="button"
+                    onClick={() => setWarmupMinutes(preset.mins)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                      warmupMinutes === preset.mins
+                        ? 'bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400'
+                        : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2 pt-1">
+                <span className="text-[11px] text-slate-400">Custom minutes:</span>
+                <input
+                  type="number"
+                  min={10}
+                  max={240}
+                  step={5}
+                  value={warmupMinutes}
+                  onChange={(e) => setWarmupMinutes(parseInt(e.target.value, 10) || 65)}
+                  className="w-20 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white text-center focus:outline-none focus:border-emerald-500"
+                />
+                <span className="text-[11px] text-slate-500">mins before tee time</span>
+              </div>
             </div>
 
             {/* Accent Color Picker */}

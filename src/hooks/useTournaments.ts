@@ -40,6 +40,34 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
     );
   };
 
+  // Set / update golfer tee time for a tournament
+  const setPlayerTeeTime = (
+    tournamentId: string,
+    playerId: string,
+    teeTime: string
+  ) => {
+    setTournaments((prev) =>
+      prev.map((t) => {
+        if (t.id === tournamentId) {
+          const currentTeeTimes = t.playerTeeTimes || {};
+          if (!teeTime.trim()) {
+            const copy = { ...currentTeeTimes };
+            delete copy[playerId];
+            return { ...t, playerTeeTimes: copy };
+          }
+          return {
+            ...t,
+            playerTeeTimes: {
+              ...currentTeeTimes,
+              [playerId]: teeTime.trim(),
+            },
+          };
+        }
+        return t;
+      })
+    );
+  };
+
   // Add tournament
   const addTournament = (newT: Tournament) => {
     setTournaments((prev) => [newT, ...prev]);
@@ -232,6 +260,7 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
     filters,
     setFilters,
     setPlayerRegistration,
+    setPlayerTeeTime,
     addTournament,
     updateTournament,
     deleteTournament,

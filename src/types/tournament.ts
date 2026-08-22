@@ -17,6 +17,7 @@ export interface Player {
   uskidsDivision: string; // e.g. "Boys 9", "Girls 11-12"
   scjgaDivision: string;  // e.g. "Boys 10-12", "Girls 13-18"
   yardage?: string;        // e.g. "1,800 yds (9-holes)" or "5,200 yds (18-holes)"
+  warmupMinutes?: number;  // Warm-up / arrival buffer in minutes (e.g. 65 = 1h 5m)
   color: string;           // Hex color for badges/markers
   avatarEmoji?: string;
   isDefault?: boolean;
@@ -52,6 +53,7 @@ export interface Tournament {
   registrationDeadline?: string;
   registrationUrl?: string;
   playerRegistrations: Record<string, RegistrationStatus>; // playerId -> RegistrationStatus
+  playerTeeTimes?: Record<string, string>; // playerId -> "10:54" or "10:54 AM"
   notes?: string;
   yardageOrFormat?: string;
   isMajor?: boolean;
@@ -72,6 +74,17 @@ export interface DistanceInfo {
   driveTimeFormatted: string; // e.g. "35 mins", "1 hr 15 mins"
   googleMapsDirectionsUrl: string;
   appleMapsDirectionsUrl: string;
+}
+
+export interface DepartureSchedule {
+  teeTimeRaw: string;
+  teeTimeFormatted: string;
+  warmupMinutes: number;
+  warmupFormatted: string;
+  targetArrivalTimeFormatted: string;
+  driveTimeMinutes: number;
+  driveTimeFormatted: string;
+  departureTimeFormatted: string;
 }
 
 export type DatePreset = 

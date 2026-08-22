@@ -59,10 +59,18 @@ export function generateICalendar(
     endDateObj.setDate(endDateObj.getDate() + 1);
     const dtEnd = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
 
+    const teeTimeDescriptions = players
+      .filter((p) => t.playerTeeTimes && t.playerTeeTimes[p.id])
+      .map((p) => {
+        const tee = t.playerTeeTimes![p.id];
+        return `Tee Time (${p.name}): ${tee} (Warm-up buffer: ${p.warmupMinutes || 65} mins)`;
+      });
+
     const description = [
       `Tour: ${t.tour === 'USKG' ? 'U.S. Kids Golf (Charleston Local Tour)' : 'SCJGA'}`,
       `Duration: ${t.duration}`,
       `Course: ${t.course.name} (${t.course.city}, SC)`,
+      ...teeTimeDescriptions,
       t.entryFee ? `Entry Fee: $${t.entryFee}` : '',
       t.yardageOrFormat ? `Format: ${t.yardageOrFormat}` : '',
       t.notes ? `Notes: ${t.notes}` : '',

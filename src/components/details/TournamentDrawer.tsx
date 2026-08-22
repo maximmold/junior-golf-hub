@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tournament, Player, RegistrationStatus, UserLocation } from '../../types/tournament';
-import { calculateDistanceAndETA } from '../../services/distanceService';
+import { calculateDistanceAndETA, calculateDepartureSchedule, formatMinutesDuration } from '../../services/distanceService';
 import { generateICalendar, downloadFile } from '../../services/calendarExport';
 import { 
   X, 
@@ -17,7 +17,9 @@ import {
   Check, 
   HelpCircle, 
   CalendarPlus,
-  Compass
+  Compass,
+  Car,
+  Flag
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
@@ -27,6 +29,7 @@ interface TournamentDrawerProps {
   players: Player[];
   userLocation: UserLocation;
   onSetRegistration: (tournamentId: string, playerId: string, status: RegistrationStatus) => void;
+  onSetTeeTime?: (tournamentId: string, playerId: string, teeTime: string) => void;
 }
 
 export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
@@ -35,7 +38,11 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
   players,
   userLocation,
   onSetRegistration,
+  onSetTeeTime,
 }) => {
+  const [editingTeeTimePlayerId, setEditingTeeTimePlayerId] = useState<string | null>(null);
+  const [tempTeeTimeInput, setTempTeeTimeInput] = useState('');
+
   if (!tournament) return null;
 
   const eta = calculateDistanceAndETA(userLocation, tournament.course);
@@ -48,7 +55,7 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
     formattedDate = format(startDateObj, 'EEEE, MMMM d, yyyy');
     if (tournament.startDate !== tournament.endDate) {
       const endDateObj = parseISO(tournament.endDate);
-      formattedDate = `${format(startDateObj, 'MMM d')} - ${format(endDateObj, 'MMMM d, yyyy')}`;
+      formattedDate = `${format(startDateObj, 'EEE, MMM d')} - ${format(endDateObj, 'EEE, MMM d, yyyy')}`;
     }
   } catch {
     formattedDate = tournament.startDate;
@@ -57,6 +64,14 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
   const handleExportICal = () => {
     const ics = generateICalendar([tournament], players);
     downloadFile(ics, `${tournament.name.replace(/[^a-z0-9]/gi, '_')}.ics`, 'text/calendar;charset=utf-8');
+  };
+
+  const handleSaveTeeTime = (playerId: string) => {
+    if (onSetTeeTime) {
+      onSetTeeTime(tournament.id, playerId, tempTeeTimeInput);
+    }
+    setEditingTeeTimePlayerId(null);
+    setTempTeeTimeInput('');
   };
 
   return (
@@ -248,6 +263,139 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
                         <span>Clear</span>
                       </button>
                     </div>
+
+                    {/* Tee Time & Day-of Departure Itinerary */}
+                    {(() => {
+                      const teeTime = tournament.playerTeeTimes?.[p.id];
+                      const warmupMins = p.warmupMinutes !== undefined ? p.warmupMinutes : 65;
+                      const schedule = teeTime ? calculateDepartureSchedule(teeTime, warmupMins, eta.driveTimeMinutes) : null;
+                      const isEditingTeeTime = editingTeeTimePlayerId === p.id;
+
+                      return (
+                        <div className="mt-2 pt-2.5 border-t border-slate-800/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+                              <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>Tee Time:</span>
+                              {teeTime ? (
+                                <span className="text-emerald-400 font-extrabold px-2 py-0.5 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-xs">
+                                  🏌️ {schedule?.teeTimeFormatted || teeTime}
+                                </span>
+                              ) : (
+                                <span className="text-slate-500 font-normal italic text-xs">Not set yet</span>
+                              )}
+                            </div>
+                            
+                            {!isEditingTeeTime && (
+                              <button
+                                onClick={() => {
+                                  setEditingTeeTimePlayerId(p.id);
+                                  setTempTeeTimeInput(teeTime || '10:54');
+                                }}
+                                className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 underline transition-colors"
+                              >
+                                {teeTime ? 'Edit Tee Time' : '+ Add Tee Time'}
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Inline Edit Form */}
+                          {isEditingTeeTime && (
+                            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-700/80 space-y-2 animate-in fade-in">
+                              <div className="flex items-center gap-2">
+                                <label className="text-[11px] text-slate-300 font-semibold">Tee Time:</label>
+                                <input
+                                  type="text"
+                                  placeholder="e.g. 10:54 AM or 10:54"
+                                  value={tempTeeTimeInput}
+                                  onChange={(e) => setTempTeeTimeInput(e.target.value)}
+                                  className="flex-1 bg-slate-950 border border-slate-600 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-emerald-500"
+                                />
+                                <button
+                                  onClick={() => handleSaveTeeTime(p.id)}
+                                  className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  onClick={() => setEditingTeeTimePlayerId(null)}
+                                  className="px-2 py-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white text-xs"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                              <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                                <span>Quick presets:</span>
+                                {['8:30 AM', '9:15 AM', '10:00 AM', '10:54 AM', '12:30 PM', '1:45 PM'].map((t) => (
+                                  <button
+                                    key={t}
+                                    type="button"
+                                    onClick={() => setTempTeeTimeInput(t)}
+                                    className="px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 hover:border-slate-600 text-slate-300 hover:text-white"
+                                  >
+                                    {t}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Calculated Day-Of Departure Schedule Card */}
+                          {schedule && (
+                            <div className="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/30 space-y-2">
+                              <div className="flex items-center justify-between text-[11px] border-b border-slate-800 pb-1.5">
+                                <span className="font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                                  <Car className="w-3.5 h-3.5" />
+                                  <span>Travel & Departure Itinerary</span>
+                                </span>
+                                <span className="text-[10px] text-slate-400">
+                                  ⏱️ {schedule.warmupFormatted} warm-up buffer
+                                </span>
+                              </div>
+
+                              <div className="grid grid-cols-3 gap-2 text-center pt-1">
+                                <div className="p-2 rounded-lg bg-slate-950/80 border border-emerald-500/40">
+                                  <div className="text-[10px] font-bold uppercase text-emerald-400">🚗 Depart Home</div>
+                                  <div className="text-sm font-black text-white mt-0.5">
+                                    {schedule.departureTimeFormatted}
+                                  </div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5">({schedule.driveTimeFormatted} drive)</div>
+                                </div>
+
+                                <div className="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+                                  <div className="text-[10px] font-bold uppercase text-slate-300">⛳ Arrive & Warm Up</div>
+                                  <div className="text-sm font-black text-white mt-0.5">
+                                    {schedule.targetArrivalTimeFormatted}
+                                  </div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5">({schedule.warmupFormatted} before)</div>
+                                </div>
+
+                                <div className="p-2 rounded-lg bg-slate-950/80 border border-amber-500/40">
+                                  <div className="text-[10px] font-bold uppercase text-amber-400">🏌️ Tee Off</div>
+                                  <div className="text-sm font-black text-amber-300 mt-0.5">
+                                    {schedule.teeTimeFormatted}
+                                  </div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5">Tee Time</div>
+                                </div>
+                              </div>
+
+                              <div className="text-[10px] text-slate-400 flex items-center justify-between pt-1">
+                                <span>📍 Starting from {userLocation.label || userLocation.address.split(',')[0]}</span>
+                                <a
+                                  href={eta.googleMapsDirectionsUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-emerald-400 hover:underline flex items-center gap-1"
+                                >
+                                  <span>Open GPS</span>
+                                  <ExternalLink className="w-2.5 h-2.5" />
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 );
               })}

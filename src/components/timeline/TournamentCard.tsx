@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tournament, Player, RegistrationStatus, UserLocation } from '../../types/tournament';
-import { calculateDistanceAndETA } from '../../services/distanceService';
+import { calculateDistanceAndETA, calculateDepartureSchedule } from '../../services/distanceService';
 import { generateICalendar, downloadFile } from '../../services/calendarExport';
 import { 
   MapPin, 
@@ -13,7 +13,8 @@ import {
   ExternalLink, 
   Plus,
   Share2,
-  CalendarPlus
+  CalendarPlus,
+  Car
 } from 'lucide-react';
 import { format, parseISO, differenceInCalendarDays } from 'date-fns';
 
@@ -35,6 +36,14 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
   onOpenDetails,
 }) => {
   const eta = calculateDistanceAndETA(userLocation, tournament.course);
+
+  // Active target player
+  const targetPlayer = players.find((p) => p.id === selectedPlayerId) || players[0];
+  const activeStatus = tournament.playerRegistrations[targetPlayer?.id || 'p1'] || 'not_registered';
+  const playerTeeTime = targetPlayer ? tournament.playerTeeTimes?.[targetPlayer.id] : undefined;
+  const departureSchedule = playerTeeTime 
+    ? calculateDepartureSchedule(playerTeeTime, targetPlayer?.warmupMinutes || 65, eta.driveTimeMinutes)
+    : null;
 
   // Format date range
   let formattedDate = tournament.startDate;
@@ -60,10 +69,6 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
 
   const isUSKG = tournament.tour === 'USKG';
   const is2Day = tournament.duration === '2-Day';
-
-  // Active target player
-  const targetPlayer = players.find((p) => p.id === selectedPlayerId) || players[0];
-  const activeStatus = tournament.playerRegistrations[targetPlayer?.id || 'p1'] || 'not_registered';
 
   const handleExportSingle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -195,6 +200,32 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
         </div>
 
       </div>
+
+      {/* Day-of Departure & Tee Time Spotlight Callout */}
+      {departureSchedule && (
+        <div 
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenDetails(tournament);
+          }}
+          className="mb-3 p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 flex flex-wrap items-center justify-between gap-2 text-xs hover:bg-emerald-950/60 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <span className="font-extrabold text-emerald-300 flex items-center gap-1">
+              🏌️ Tee Off: <span className="text-white">{departureSchedule.teeTimeFormatted}</span>
+            </span>
+            <span className="text-slate-600">•</span>
+            <span className="text-slate-400 text-[11px]">
+              Arrive by {departureSchedule.targetArrivalTimeFormatted} ({departureSchedule.warmupFormatted} warm-up)
+            </span>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] font-bold bg-emerald-900/90 text-emerald-200 px-2.5 py-1 rounded-lg border border-emerald-400/40 shadow-sm ml-auto">
+            <Car className="w-3.5 h-3.5" />
+            <span>Depart:</span>
+            <span className="text-white font-black">{departureSchedule.departureTimeFormatted}</span>
+          </div>
+        </div>
+      )}
 
       {/* Player Status & Registration Actions */}
       <div 
