@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "bundle": "tsc -b && vite build && node scripts/bundle-singlefile.js",
+    "scrape:scjga": "node scripts/scrape-scjga.js",
     "preview": "vite preview"
   },
   "dependencies": {

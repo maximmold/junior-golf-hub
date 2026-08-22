@@ -224,13 +224,13 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-12',
     duration: '1-Day',
     entryFee: 30,
-    registrationDeadline: '2026-08-29',
-    registrationUrl: 'https://www.scjga.org',
+    registrationDeadline: '2026-08-25',
+    registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2655/',
     playerRegistrations: {
       'player-owen': 'registered',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Closes Sat Aug 29. Official SCJGA One-Day.',
+    notes: 'Closes Tue Aug 25 at 12:00 PM EDT. Official SCJGA One-Day.',
     season: 'Fall'
   },
   {
@@ -244,12 +244,13 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-19',
     duration: '1-Day',
     entryFee: 30,
-    registrationUrl: 'https://www.scjga.org',
+    registrationDeadline: '2026-09-05',
+    registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2657/',
     playerRegistrations: {
       'player-owen': 'considering',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Considering tournament at CC of Newberry.',
+    notes: 'Considering tournament at CC of Newberry. Closes Sat Sep 5 at 12:00 PM EDT.',
     season: 'Fall'
   },
   {
@@ -263,12 +264,13 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-20',
     duration: '2-Day',
     entryFee: 180,
-    registrationUrl: 'https://www.scjga.org',
+    registrationDeadline: '2026-09-04',
+    registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2696/',
     playerRegistrations: {
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Players Series Event',
-    notes: 'Contingent tournament at Darlington Country Club.',
+    notes: 'Contingent tournament at Darlington Country Club. Closes Fri Sep 4 at 12:00 PM EDT.',
     season: 'Fall',
     isMajor: true
   },
@@ -283,6 +285,8 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-26',
     duration: '1-Day',
     entryFee: 30,
+    registrationDeadline: '2026-09-19',
+    registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26112/',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play',
     season: 'Fall'
@@ -298,6 +302,8 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-04',
     duration: '2-Day',
     entryFee: 180,
+    registrationDeadline: '2026-09-18',
+    registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/schedule/upcoming.htm?display=champ',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play',
     season: 'Fall',
