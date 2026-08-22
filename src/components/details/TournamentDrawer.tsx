@@ -45,7 +45,7 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
 
   if (!tournament) return null;
 
-  const eta = calculateDistanceAndETA(userLocation, tournament.course);
+  const eta = calculateDistanceAndETA(userLocation, tournament.course, players[0]?.id);
   const isUSKG = tournament.tour === 'USKG';
   const is2Day = tournament.duration === '2-Day';
 

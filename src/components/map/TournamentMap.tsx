@@ -129,7 +129,7 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
 
       bounds.extend([course.lat, course.lng]);
 
-      const eta = calculateDistanceAndETA(userLocation, course);
+      const eta = calculateDistanceAndETA(userLocation, course, selectedPlayerId);
 
       // Check if signed up or contingent
       const isSignedUp = selectedPlayerId === 'ALL'

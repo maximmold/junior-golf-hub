@@ -35,7 +35,7 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
   onSetRegistration,
   onOpenDetails,
 }) => {
-  const eta = calculateDistanceAndETA(userLocation, tournament.course);
+  const eta = calculateDistanceAndETA(userLocation, tournament.course, selectedPlayerId);
 
   // Active target player
   const targetPlayer = players.find((p) => p.id === selectedPlayerId) || players[0];

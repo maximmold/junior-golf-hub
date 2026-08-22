@@ -231,7 +231,7 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
       
       if (isRegistered) {
         registeredCount++;
-        const eta = calculateDistanceAndETA(userLocation, t.course);
+        const eta = calculateDistanceAndETA(userLocation, t.course, filters.selectedPlayerId);
         totalRegisteredMiles += eta.distanceMiles * 2; // Roundtrip driving
       } else if (isContingent) {
         contingentCount++;
