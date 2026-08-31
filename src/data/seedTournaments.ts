@@ -86,26 +86,6 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     isTourChampionship: false
   },
   {
-    id: 'uskg-2026-09-12-woodside-jones',
-    name: 'U.S. Kids Golf - Woodside Plantation (Jones Course)',
-    tour: 'USKG',
-    tourSeries: 'Charleston Local Tour',
-    courseId: 'woodside-jones',
-    course: COURSES['woodside-jones'],
-    startDate: '2026-09-12',
-    endDate: '2026-09-12',
-    duration: '1-Day',
-    entryFee: 55,
-    registrationUrl: 'https://www.uskidsgolf.com/tournaments/',
-    playerRegistrations: {
-      'player-owen': 'open',
-    },
-    yardageOrFormat: 'Stroke Play - Age Group Yardages',
-    notes: 'Conflicts with Fripp Island Junior Challenge (Sep 12-13). Not registered.',
-    season: 'Fall',
-    isTourChampionship: false
-  },
-  {
     id: 'uskg-2026-09-27-berkeley',
     name: 'U.S. Kids Golf - Berkeley Country Club',
     tour: 'USKG',
@@ -232,7 +212,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Junior Challenge (Ocean Creek & Ocean Point)',
-    notes: 'Active/Accepted. Ocean Creek GC. Conflicts with LinRick One Day (Sep 12), Woodside Jones (Sep 12), and Harvey Brock (Sep 12-13).',
+    notes: 'Active/Accepted. Ocean Creek GC. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
     season: 'Fall',
     isMajor: true
   },

@@ -94,21 +94,6 @@ export const COURSES: Record<string, Course> = {
     par: 73,
     facilityType: 'Public'
   },
-  'woodside-jones': {
-    id: 'woodside-jones',
-    name: 'Woodside Plantation Country Club (Jones Course)',
-    address: '1 Woodside Plantation Dr',
-    city: 'Aiken',
-    state: 'SC',
-    zip: '29803',
-    lat: 33.4951,
-    lng: -81.6845,
-    phone: '(803) 648-7774',
-    website: 'https://woodsideplantationcc.com',
-    holes: 18,
-    par: 72,
-    facilityType: 'Semi-Private'
-  },
   'fripp-island': {
     id: 'fripp-island',
     name: 'Fripp Island Resort (Ocean Creek / Ocean Point)',
