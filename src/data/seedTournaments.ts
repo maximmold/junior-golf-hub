@@ -78,10 +78,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-10',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
-      'player-owen': 'considering',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: 'Stroke Play - 9/18 Holes',
-    notes: 'Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10. Needs decision by regular cutoff Tue Sep 8.',
+    notes: 'Not playing - skipped due to Fripp Island Junior Challenge conflict (Sep 12-13). Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10.',
     season: 'Fall',
     isTourChampionship: false
   },
