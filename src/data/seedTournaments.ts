@@ -212,7 +212,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Junior Challenge (Ocean Creek & Ocean Point)',
-    notes: 'Active/Accepted. Ocean Creek GC. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
+    notes: 'CONFIRMED - Active/accepted, he is playing. Ocean Creek GC. LinRick is being dropped for it. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
     season: 'Fall',
     isMajor: true
   },
