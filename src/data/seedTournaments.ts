@@ -4,10 +4,10 @@ import { COURSES } from './courses';
 export const DEFAULT_PLAYERS: Player[] = [
   {
     id: 'player-owen',
-    name: 'Owen',
-    uskidsDivision: 'Boys 9',
-    scjgaDivision: 'Boys 10-12',
-    yardage: '1,850 yds (9-holes)',
+    name: 'Owen Moldenhauer',
+    uskidsDivision: 'Boys 13-14',
+    scjgaDivision: 'Boys 13-14 / 13-19',
+    yardage: '5,200-5,800 yds (18-holes)',
     warmupMinutes: 65, // 1h 5m arrival and warm-up buffer
     color: '#10b981', // Emerald
     avatarEmoji: '🏌️‍♂️',
@@ -60,7 +60,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: 'Stroke Play - Age Group Yardages',
-    notes: 'Late fee $15 Aug 26 - Aug 27. All registrations close Aug 27.',
+    notes: 'Played/Registered. Tournament completed Aug 30, 2026.',
     season: 'Fall',
     isTourChampionship: false
   },
@@ -78,10 +78,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-10',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
-      'player-owen': 'open',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: 'Stroke Play - 9/18 Holes',
-    notes: 'Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10.',
+    notes: 'Not playing - skipped due to Fripp Island Junior Challenge conflict (Sep 12-13). Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10.',
     season: 'Fall',
     isTourChampionship: false
   },
@@ -187,8 +187,11 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     duration: '2-Day',
     entryFee: 200,
     registrationDeadline: '2026-08-24',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: {
+      'player-owen': 'open',
+    },
     yardageOrFormat: '36-Hole Major Championship',
+    notes: 'Not registered. Conflicts with Fripp Island Junior Challenge (Sep 12-13).',
     season: 'Fall',
     isMajor: true
   },
@@ -206,10 +209,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-08-28',
     registrationUrl: 'https://www.scjga.org',
     playerRegistrations: {
-      'player-owen': 'contingent',
+      'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Junior Challenge (Ocean Creek & Ocean Point)',
-    notes: 'Contingent tournament. Closes Fri Aug 28.',
+    notes: 'Active/Accepted. Ocean Creek GC. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
     season: 'Fall',
     isMajor: true
   },
@@ -227,10 +230,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-08-25',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2655/',
     playerRegistrations: {
-      'player-owen': 'registered',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Closes Tue Aug 25 at 12:00 PM EDT. Official SCJGA One-Day.',
+    notes: 'Withdrawal email sent to Alyson Kinzel (Maxim handles cancellations). Dropping for Fripp Island. Conflicts with Fripp (Sep 12-13).',
     season: 'Fall'
   },
   {
@@ -247,10 +250,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-05',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2657/',
     playerRegistrations: {
-      'player-owen': 'considering',
+      'player-owen': 'waitlist',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Considering tournament at CC of Newberry. Closes Sat Sep 5 at 12:00 PM EDT.',
+    notes: 'Wait List. Conflicts with Players Series @ Darlington CC (Sep 19-20).',
     season: 'Fall'
   },
   {
@@ -270,7 +273,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Players Series Event',
-    notes: 'Contingent tournament at Darlington Country Club. Closes Fri Sep 4 at 12:00 PM EDT.',
+    notes: 'Pending. Approval deadline Sep 4. Conflicts with CC of Newberry One Day (Sep 19).',
     season: 'Fall',
     isMajor: true
   },
@@ -304,8 +307,11 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 180,
     registrationDeadline: '2026-09-18',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/schedule/upcoming.htm?display=champ',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: {
+      'player-owen': 'contingent',
+    },
     yardageOrFormat: '36-Hole Stroke Play',
+    notes: 'Pending. Conflicts with Village Greens One Day (Oct 4).',
     season: 'Fall',
     isMajor: true
   },
@@ -319,8 +325,11 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-10-04',
     endDate: '2026-10-04',
     duration: '1-Day',
-    playerRegistrations: { 'player-owen': 'open' },
-    yardageOrFormat: '18-Hole Stroke Play',
+    playerRegistrations: {
+      'player-owen': 'registered',
+    },
+    yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
+    notes: 'Active/Accepted. Boys 13-19 division. Conflicts with Players Series @ Timberlake (Oct 3-4).',
     season: 'Fall'
   },
   {
@@ -333,8 +342,11 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-10-10',
     endDate: '2026-10-11',
     duration: '2-Day',
-    playerRegistrations: { 'player-owen': 'open' },
-    yardageOrFormat: '36-Hole Junior Championship',
+    playerRegistrations: {
+      'player-owen': 'contingent',
+    },
+    yardageOrFormat: '36-Hole Junior Championship - Boys 13-15',
+    notes: 'Pending. Cobb\'s Glen CC.',
     season: 'Fall',
     isMajor: true
   },
