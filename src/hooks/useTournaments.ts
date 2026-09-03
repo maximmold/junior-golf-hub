@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { format, parseISO, addDays, addMonths } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { Tournament, FilterState, RegistrationStatus, Player, UserLocation } from '../types/tournament';
 import { loadTournaments, saveTournaments, DEFAULT_FILTERS } from '../services/storageService';
 import { calculateDistanceAndETA } from '../services/distanceService';
@@ -13,9 +14,9 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
     saveTournaments(tournaments);
   }, [tournaments]);
 
-  // Today ISO string (e.g. 2026-08-20)
+  // Today ISO string in America/New_York timezone (e.g. 2026-08-20)
   const todayStr = useMemo(() => {
-    return new Date().toISOString().split('T')[0];
+    return formatInTimeZone(new Date(), 'America/New_York', 'yyyy-MM-dd');
   }, []);
 
   // Update registration status for a player
@@ -244,7 +245,9 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
 
   // Overall Statistics
   const stats = useMemo(() => {
-    const upcoming = tournaments.filter((t) => t.startDate >= todayStr || t.endDate >= todayStr);
+    const upcoming = tournaments
+      .filter((t) => t.startDate >= todayStr || t.endDate >= todayStr)
+      .sort((a, b) => a.startDate.localeCompare(b.startDate)); // Sort by startDate
     
     // Count registered & contingent events
     let registeredCount = 0;
@@ -268,9 +271,30 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
       }
     });
 
-    const nextTournament = upcoming.find((t) => 
+    // Find next tournament: soonest registered, then soonest contingent, then soonest upcoming
+    const nextRegistered = upcoming.find((t) => 
       Object.values(t.playerRegistrations).some((st) => st === 'registered')
-    ) || upcoming[0];
+    );
+    const nextContingent = upcoming.find((t) => 
+      Object.values(t.playerRegistrations).some((st) => st === 'contingent')
+    );
+    const nextTournament = nextRegistered || nextContingent || upcoming[0];
+
+    // Find next sign-up deadline: soonest future/today deadline among non-registered events
+    const nextSignup = upcoming
+      .filter((t) => {
+        // Exclude registered and withdrawn/skipped events
+        const statuses = Object.values(t.playerRegistrations);
+        if (statuses.some((st) => st === 'registered')) return false;
+        
+        // Include if has deadline and deadline is today or future
+        return t.registrationDeadline && t.registrationDeadline >= todayStr;
+      })
+      .sort((a, b) => {
+        const aDeadline = a.registrationDeadline || '';
+        const bDeadline = b.registrationDeadline || '';
+        return aDeadline.localeCompare(bDeadline);
+      })[0];
 
     return {
       totalUpcoming: upcoming.length,
@@ -279,8 +303,9 @@ export function useTournaments(players: Player[], userLocation: UserLocation) {
       consideringCount,
       totalRegisteredRoundtripMiles: Math.round(totalRegisteredMiles),
       nextTournament,
+      nextSignup,
     };
-  }, [tournaments, todayStr, userLocation]);
+  }, [tournaments, todayStr, userLocation, filters.selectedPlayerId]);
 
   return {
     tournaments,
