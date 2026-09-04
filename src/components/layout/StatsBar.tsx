@@ -11,6 +11,7 @@ interface StatsBarProps {
   totalRegisteredMiles: number;
   nextTournament?: Tournament;
   nextTournamentETA?: DistanceInfo;
+  nextSignup?: Tournament;
   onSelectTournament: (t: Tournament) => void;
   onFilterSignedUpOnly: () => void;
   onFilterContingentOnly: () => void;
@@ -24,11 +25,12 @@ export const StatsBar: React.FC<StatsBarProps> = ({
   totalRegisteredMiles,
   nextTournament,
   nextTournamentETA,
+  nextSignup,
   onSelectTournament,
   onFilterSignedUpOnly,
   onFilterContingentOnly,
 }) => {
-  // Compute relative days
+  // Compute relative days for Next Up
   let relativeNextText = 'No upcoming event';
   if (nextTournament) {
     try {
@@ -40,6 +42,22 @@ export const StatsBar: React.FC<StatsBarProps> = ({
       else relativeNextText = format(targetDate, 'MMM d');
     } catch {
       relativeNextText = nextTournament.startDate;
+    }
+  }
+
+  // Compute deadline info for Next Sign-up
+  let nextSignupDaysLeft = 0;
+  let nextSignupDeadlineText = '';
+  if (nextSignup && nextSignup.registrationDeadline) {
+    try {
+      const deadlineDate = parseISO(nextSignup.registrationDeadline);
+      nextSignupDaysLeft = differenceInCalendarDays(deadlineDate, new Date());
+      if (nextSignupDaysLeft === 0) nextSignupDeadlineText = 'Today!';
+      else if (nextSignupDaysLeft === 1) nextSignupDeadlineText = 'Tomorrow';
+      else if (nextSignupDaysLeft < 7) nextSignupDeadlineText = `${nextSignupDaysLeft} days`;
+      else nextSignupDeadlineText = format(deadlineDate, 'MMM d');
+    } catch {
+      nextSignupDeadlineText = nextSignup.registrationDeadline;
     }
   }
 
@@ -116,7 +134,7 @@ export const StatsBar: React.FC<StatsBarProps> = ({
         </div>
       </div>
 
-      {/* 5. Next Event Spotlight Card */}
+      {/* 6. Next Event Spotlight Card */}
       {nextTournament && (
         <div 
           onClick={() => onSelectTournament(nextTournament)}
@@ -131,7 +149,7 @@ export const StatsBar: React.FC<StatsBarProps> = ({
 
           <div className="mt-1">
             <div className="text-xs font-bold text-white truncate group-hover:text-emerald-300">
-              {nextTournament.course.name}
+              {nextTournament.name}
             </div>
             <div className="flex items-center gap-2 text-[11px] text-slate-400 mt-0.5">
               <span>{nextTournament.tour === 'USKG' ? 'US Kids' : 'SCJGA'}</span>
@@ -140,6 +158,38 @@ export const StatsBar: React.FC<StatsBarProps> = ({
                 <span className="text-emerald-400 font-medium flex items-center gap-1">
                   🚗 {nextTournamentETA.driveTimeFormatted}
                 </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. Next Sign-up Deadline Card */}
+      {nextSignup && nextSignup.registrationDeadline && (
+        <div 
+          onClick={() => onSelectTournament(nextSignup)}
+          className="col-span-2 md:col-span-4 lg:col-span-1 bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-slate-800 hover:border-amber-600/50 rounded-xl p-3 flex flex-col justify-between cursor-pointer transition-all group"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              Next Sign-up: {nextSignupDeadlineText}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />
+          </div>
+
+          <div className="mt-1">
+            <div className="text-xs font-bold text-white truncate group-hover:text-amber-300">
+              {nextSignup.name}
+            </div>
+            <div className="flex items-center gap-2 text-[11px] text-slate-400 mt-0.5">
+              <span>Deadline {format(parseISO(nextSignup.registrationDeadline), 'MMM d')}</span>
+              {nextSignupDaysLeft >= 0 && nextSignupDaysLeft <= 7 && (
+                <>
+                  <span>•</span>
+                  <span className={`font-medium ${nextSignupDaysLeft <= 2 ? 'text-red-400' : 'text-amber-400'}`}>
+                    {nextSignupDaysLeft === 0 ? 'Today!' : `${nextSignupDaysLeft}d left`}
+                  </span>
+                </>
               )}
             </div>
           </div>

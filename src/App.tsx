@@ -148,6 +148,7 @@ export function App() {
           totalRegisteredMiles={stats.totalRegisteredRoundtripMiles}
           nextTournament={stats.nextTournament}
           nextTournamentETA={nextTournamentETA}
+          nextSignup={stats.nextSignup}
           onSelectTournament={(t) => setSelectedTournament(t)}
           onFilterSignedUpOnly={handleFilterSignedUpOnly}
           onFilterContingentOnly={handleFilterContingentOnly}

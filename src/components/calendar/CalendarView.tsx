@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Tournament, Player, UserLocation } from '../../types/tournament';
 import { calculateDistanceAndETA } from '../../services/distanceService';
 import { 
@@ -13,9 +13,11 @@ import {
   isSameMonth, 
   isSameDay, 
   isToday,
-  parseISO
+  parseISO,
+  differenceInCalendarDays
 } from 'date-fns';
-import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon } from 'lucide-react';
+import { formatInTimeZone } from 'date-fns-tz';
+import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, ChevronRight as ChevronRightIcon } from 'lucide-react';
 
 interface CalendarViewProps {
   tournaments: Tournament[];
@@ -34,6 +36,42 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   // Default calendar month: start at August 2026 or current month
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 7, 1)); // August 2026
+
+  // Today in America/New_York
+  const todayStr = useMemo(() => {
+    return formatInTimeZone(new Date(), 'America/New_York', 'yyyy-MM-dd');
+  }, []);
+
+  // Compute Next Up and Next Sign-up
+  const { nextTournament, nextSignup, nextTournamentETA } = useMemo(() => {
+    const upcoming = tournaments
+      .filter((t) => t.startDate >= todayStr || t.endDate >= todayStr)
+      .sort((a, b) => a.startDate.localeCompare(b.startDate));
+
+    const nextRegistered = upcoming.find((t) => 
+      Object.values(t.playerRegistrations).some((st) => st === 'registered')
+    );
+    const nextContingent = upcoming.find((t) => 
+      Object.values(t.playerRegistrations).some((st) => st === 'contingent')
+    );
+    const nextTournament = nextRegistered || nextContingent || upcoming[0];
+
+    const nextSignup = upcoming
+      .filter((t) => {
+        const statuses = Object.values(t.playerRegistrations);
+        if (statuses.some((st) => st === 'registered')) return false;
+        return t.registrationDeadline && t.registrationDeadline >= todayStr;
+      })
+      .sort((a, b) => {
+        const aDeadline = a.registrationDeadline || '';
+        const bDeadline = b.registrationDeadline || '';
+        return aDeadline.localeCompare(bDeadline);
+      })[0];
+
+    const nextTournamentETA = nextTournament ? calculateDistanceAndETA(userLocation, nextTournament.course, selectedPlayerId) : undefined;
+
+    return { nextTournament, nextSignup, nextTournamentETA };
+  }, [tournaments, todayStr, userLocation, selectedPlayerId]);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
@@ -103,6 +141,93 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           </div>
 
         </div>
+
+        {/* Compact Next Up + Next Sign-up Strip */}
+        {(nextTournament || nextSignup) && (
+          <div className="px-4 sm:px-6 py-3 border-b border-slate-800 bg-slate-950/20">
+            <div className="flex flex-col sm:flex-row gap-2">
+              
+              {/* Next Up */}
+              {nextTournament && (() => {
+                const targetDate = parseISO(nextTournament.startDate);
+                const days = differenceInCalendarDays(targetDate, new Date());
+                let relativeText = format(targetDate, 'MMM d');
+                if (days === 0) relativeText = 'Today!';
+                else if (days === 1) relativeText = 'Tomorrow!';
+                else if (days < 7) relativeText = `In ${days} days`;
+
+                return (
+                  <button
+                    onClick={() => onSelectTournament(nextTournament)}
+                    className="flex-1 bg-gradient-to-r from-emerald-950/40 to-slate-900 border border-emerald-800/40 hover:border-emerald-600/60 rounded-lg p-2.5 flex items-center justify-between group transition-all"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                        Next Up
+                      </span>
+                      <div className="text-left">
+                        <div className="text-xs font-bold text-white group-hover:text-emerald-300 truncate">
+                          {nextTournament.name}
+                        </div>
+                        <div className="text-[10px] text-slate-400 flex items-center gap-1.5">
+                          <span>{relativeText}</span>
+                          {nextTournamentETA && (
+                            <>
+                              <span>•</span>
+                              <span className="text-emerald-400">🚗 {nextTournamentETA.driveTimeFormatted}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRightIcon className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 shrink-0" />
+                  </button>
+                );
+              })()}
+
+              {/* Next Sign-up */}
+              {nextSignup && nextSignup.registrationDeadline && (() => {
+                const deadlineDate = parseISO(nextSignup.registrationDeadline);
+                const daysLeft = differenceInCalendarDays(deadlineDate, new Date());
+                let deadlineText = format(deadlineDate, 'MMM d');
+                if (daysLeft === 0) deadlineText = 'Today!';
+                else if (daysLeft === 1) deadlineText = 'Tomorrow';
+                else if (daysLeft < 7) deadlineText = `${daysLeft} days`;
+
+                return (
+                  <button
+                    onClick={() => onSelectTournament(nextSignup)}
+                    className="flex-1 bg-gradient-to-r from-amber-950/40 to-slate-900 border border-amber-800/40 hover:border-amber-600/60 rounded-lg p-2.5 flex items-center justify-between group transition-all"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 shrink-0">
+                        Next Sign-up
+                      </span>
+                      <div className="text-left">
+                        <div className="text-xs font-bold text-white group-hover:text-amber-300 truncate">
+                          {nextSignup.name}
+                        </div>
+                        <div className="text-[10px] text-slate-400 flex items-center gap-1.5">
+                          <span>Deadline {deadlineText}</span>
+                          {daysLeft >= 0 && daysLeft <= 7 && (
+                            <>
+                              <span>•</span>
+                              <span className={`font-medium ${daysLeft <= 2 ? 'text-red-400' : 'text-amber-400'}`}>
+                                {daysLeft === 0 ? 'Today!' : `${daysLeft}d left`}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRightIcon className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 shrink-0" />
+                  </button>
+                );
+              })()}
+
+            </div>
+          </div>
+        )}
 
         {/* Days of the Week Header */}
         <div className="grid grid-cols-7 border-b border-slate-800 text-center bg-slate-950/60 text-slate-400 text-[11px] font-bold uppercase tracking-wider py-2.5">
