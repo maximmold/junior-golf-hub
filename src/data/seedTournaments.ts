@@ -233,7 +233,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Withdrawal email sent to Alyson Kinzel (Maxim handles cancellations). Dropping for Fripp Island. Conflicts with Fripp (Sep 12-13).',
+    notes: 'Cancelled Aug 31. Withdrawal email sent to Alyson Kinzel (Maxim handles cancellations). Dropping for Fripp Island. Conflicts with Fripp (Sep 12-13).',
     season: 'Fall'
   },
   {
@@ -270,10 +270,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-04',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2696/',
     playerRegistrations: {
-      'player-owen': 'contingent',
+      'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Players Series Event',
-    notes: 'Pending. Approval deadline Sep 4. Conflicts with CC of Newberry One Day (Sep 19).',
+    notes: 'Registration Accepted. Conflicts with CC of Newberry One Day (Sep 19).',
     season: 'Fall',
     isMajor: true
   },
@@ -433,8 +433,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-01',
     endDate: '2026-11-01',
     duration: '1-Day',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'not_registered' },
     yardageOrFormat: '18-Hole Stroke Play (Hilton Head)',
+    notes: 'Skipped - not registered.',
     season: 'Fall'
   },
   {
