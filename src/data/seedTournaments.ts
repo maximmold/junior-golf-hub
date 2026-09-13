@@ -81,7 +81,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'not_registered',
     },
     yardageOrFormat: 'Stroke Play - 9/18 Holes',
-    notes: 'Not playing - skipped due to Fripp Island Junior Challenge conflict (Sep 12-13). Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10.',
+    notes: 'Skipped - never registered. Conflicts with Fripp Island Junior Challenge (Sep 12-13). Late fee $15 Sep 9 - Sep 10. All registrations close Sep 10.',
     season: 'Fall',
     isTourChampionship: false
   },
@@ -211,8 +211,11 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     playerRegistrations: {
       'player-owen': 'registered',
     },
+    playerTeeTimes: {
+      'player-owen': 'Sat 8:45 Ocean Creek, Sun 8:18 Ocean Point',
+    },
     yardageOrFormat: '36-Hole Junior Challenge (Ocean Creek & Ocean Point)',
-    notes: 'CONFIRMED - Active/accepted, he is playing. Ocean Creek GC. LinRick is being dropped for it. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
+    notes: 'Active - playing this weekend. Sat 8:45 Ocean Creek, Sun 8:18 Ocean Point. Conflicts with LinRick One Day (Sep 12) and Harvey Brock (Sep 12-13). Summerville (Sep 13) skipped for this event.',
     season: 'Fall',
     isMajor: true
   },
@@ -233,7 +236,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Withdrawal email sent to Alyson Kinzel (Maxim handles cancellations). Dropping for Fripp Island. Conflicts with Fripp (Sep 12-13).',
+    notes: 'Cancelled Aug 31 - $30 refund processed. Withdrew for Fripp Island. Conflicts with Fripp (Sep 12-13).',
     season: 'Fall'
   },
   {
@@ -250,10 +253,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-05',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2657/',
     playerRegistrations: {
-      'player-owen': 'waitlist',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Wait List. Conflicts with Players Series @ Darlington CC (Sep 19-20).',
+    notes: 'Cancelled - waitlist cancel processed Sep 8. Conflicts with Players Series @ Darlington CC (Sep 19-20).',
     season: 'Fall'
   },
   {
@@ -270,10 +273,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-04',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2696/',
     playerRegistrations: {
-      'player-owen': 'contingent',
+      'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Players Series Event',
-    notes: 'Pending. Approval deadline Sep 4. Conflicts with CC of Newberry One Day (Sep 19).',
+    notes: 'Registration Accepted - confirmed registered. Conflicts with CC of Newberry One Day (Sep 19).',
     season: 'Fall',
     isMajor: true
   },
@@ -311,7 +314,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Pending. Conflicts with Village Greens One Day (Oct 4).',
+    notes: 'Pending - awaiting approval. Conflicts with Village Greens One Day (Oct 4).',
     season: 'Fall',
     isMajor: true
   },
@@ -346,7 +349,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Junior Championship - Boys 13-15',
-    notes: 'Pending. Cobb\'s Glen CC.',
+    notes: 'Pending - awaiting approval. Cobb\'s Glen CC.',
     season: 'Fall',
     isMajor: true
   },
@@ -374,8 +377,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-10-18',
     endDate: '2026-10-18',
     duration: '1-Day',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'not_registered' },
     yardageOrFormat: '18-Hole Stroke Play',
+    notes: 'Cancelled - cancel processed Sep 8 (Crowfield Tour Championship same day).',
     season: 'Fall'
   },
   {
@@ -404,22 +408,26 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-10-24',
     endDate: '2026-10-24',
     duration: '1-Day',
-    playerRegistrations: { 'player-owen': 'open' },
-    yardageOrFormat: '18-Hole Stroke Play',
+    entryFee: 30,
+    playerRegistrations: { 'player-owen': 'contingent' },
+    yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
+    notes: 'Pending - awaiting approval. Conflicts with Rick Vieth Junior Four Ball (Oct 24-25).',
     season: 'Fall'
   },
   {
     id: 'scjga-2026-10-24-25-rick-vieth',
     name: 'Rick Vieth Junior Four Ball',
     tour: 'SCJGA',
-    tourSeries: 'Major Championship',
+    tourSeries: 'Players Series',
     courseId: 'the-fort-club',
     course: COURSES['the-fort-club'],
     startDate: '2026-10-24',
     endDate: '2026-10-25',
     duration: '2-Day',
-    playerRegistrations: { 'player-owen': 'open' },
-    yardageOrFormat: 'Junior Four Ball',
+    entryFee: 180,
+    playerRegistrations: { 'player-owen': 'contingent' },
+    yardageOrFormat: 'Four-Ball Format - Boys 13-18',
+    notes: 'Friend-signed-up / unconfirmed - friend may have signed Owen up under partner account; no confirmation email received yet; live verification pending. Conflicts with CC of Lexington One Day (Oct 24). The Fort Club, Ninety Six SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -433,8 +441,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-01',
     endDate: '2026-11-01',
     duration: '1-Day',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'not_registered' },
     yardageOrFormat: '18-Hole Stroke Play (Hilton Head)',
+    notes: 'Skipped - not planning to register.',
     season: 'Fall'
   },
   {
