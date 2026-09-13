@@ -411,7 +411,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 30,
     playerRegistrations: { 'player-owen': 'contingent' },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Pending - Registration Acknowledgment received ~Sep 12 night. Same Sat as Rick Vieth Junior Four Ball (Oct 24-25, Registered) - Maxim deciding keep vs pull.',
+    notes: 'Pending - Registration Acknowledgment received ~Sep 12 night. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged.',
     season: 'Fall'
   },
   {
@@ -427,7 +427,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 180,
     playerRegistrations: { 'player-owen': 'registered' },
     yardageOrFormat: 'Four-Ball Format - Boys 13-18',
-    notes: 'Registered - friend entered Owen; no Owen/Maxim confirmation email expected. Conflicts with CC of Lexington One Day (Oct 24, Pending - keep vs pull decision still open). The Fort Club, Ninety Six SC.',
+    notes: 'Registered - friend entered Owen; no Owen/Maxim confirmation email expected. Keeping both this and CC Lexington (Oct 24, Pending) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged. The Fort Club, Ninety Six SC.',
     season: 'Fall',
     isMajor: true
   },
