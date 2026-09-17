@@ -30,6 +30,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-08-23',
     duration: '1-Day',
     entryFee: 55,
+    registrationOpenDate: '2026-08-02',
     registrationDeadline: '2026-08-20',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
@@ -54,6 +55,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-08-30',
     duration: '1-Day',
     entryFee: 55,
+    registrationOpenDate: '2026-08-09',
     registrationDeadline: '2026-08-27',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
@@ -75,6 +77,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-13',
     duration: '1-Day',
     entryFee: 55,
+    registrationOpenDate: '2026-08-23',
     registrationDeadline: '2026-09-10',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
@@ -96,6 +99,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-27',
     duration: '1-Day',
     entryFee: 55,
+    registrationOpenDate: '2026-09-06',
     registrationDeadline: '2026-09-24',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
@@ -117,6 +121,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-18',
     duration: '1-Day',
     entryFee: 55,
+    registrationOpenDate: '2026-09-27',
     registrationDeadline: '2026-10-15',
     registrationUrl: 'https://www.uskidsgolf.com/tournaments/local-tours/charleston-sc',
     playerRegistrations: {
@@ -186,6 +191,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-13',
     duration: '2-Day',
     entryFee: 200,
+    registrationOpenDate: '2026-07-27',
     registrationDeadline: '2026-08-24',
     playerRegistrations: {
       'player-owen': 'open',
@@ -206,6 +212,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-13',
     duration: '2-Day',
     entryFee: 180,
+    registrationOpenDate: '2026-08-01',
     registrationDeadline: '2026-08-28',
     registrationUrl: 'https://www.scjga.org',
     playerRegistrations: {
@@ -230,6 +237,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-12',
     duration: '1-Day',
     entryFee: 30,
+    registrationOpenDate: '2026-08-05',
     registrationDeadline: '2026-08-25',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2655/',
     playerRegistrations: {
@@ -250,6 +258,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-19',
     duration: '1-Day',
     entryFee: 30,
+    registrationOpenDate: '2026-08-15',
     registrationDeadline: '2026-09-05',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2657/',
     playerRegistrations: {
@@ -270,6 +279,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-20',
     duration: '2-Day',
     entryFee: 180,
+    registrationOpenDate: '2026-08-08',
     registrationDeadline: '2026-09-04',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2696/',
     playerRegistrations: {
@@ -291,6 +301,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-09-26',
     duration: '1-Day',
     entryFee: 30,
+    registrationOpenDate: '2026-09-05',
     registrationDeadline: '2026-09-19',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26112/',
     playerRegistrations: { 'player-owen': 'open' },
@@ -308,6 +319,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-04',
     duration: '2-Day',
     entryFee: 180,
+    registrationOpenDate: '2026-09-01',
     registrationDeadline: '2026-09-18',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/schedule/upcoming.htm?display=champ',
     playerRegistrations: {

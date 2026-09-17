@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Tournament, Player, UserLocation } from '../../types/tournament';
+import { Tournament, Player, UserLocation, SignupDateDisplay } from '../../types/tournament';
 import { calculateDistanceAndETA } from '../../services/distanceService';
 import { 
   format, 
@@ -17,7 +17,7 @@ import {
   differenceInCalendarDays
 } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
-import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, ChevronRight as ChevronRightIcon, DoorOpen, DoorClosed, Filter } from 'lucide-react';
 
 interface CalendarViewProps {
   tournaments: Tournament[];
@@ -36,6 +36,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   // Default calendar month: start at August 2026 or current month
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 7, 1)); // August 2026
+  
+  // Signup date display filter: 'both' (default), 'start', 'end', 'none'
+  const [signupDateDisplay, setSignupDateDisplay] = useState<SignupDateDisplay>('both');
 
   // Today in America/New_York
   const todayStr = useMemo(() => {
@@ -94,48 +97,122 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     });
   };
 
+  // Helper to find signup open dates on a given day
+  const getSignupOpensForDay = (day: Date): Tournament[] => {
+    if (signupDateDisplay === 'none' || signupDateDisplay === 'end') return [];
+    const dayStr = format(day, 'yyyy-MM-dd');
+    return tournaments.filter((t) => t.registrationOpenDate === dayStr);
+  };
+
+  // Helper to find signup close/deadline dates on a given day
+  const getSignupClosesForDay = (day: Date): Tournament[] => {
+    if (signupDateDisplay === 'none' || signupDateDisplay === 'start') return [];
+    const dayStr = format(day, 'yyyy-MM-dd');
+    return tournaments.filter((t) => t.registrationDeadline === dayStr);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
       <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
         
         {/* Calendar Header & Month Navigation */}
-        <div className="p-4 sm:p-6 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/40">
+        <div className="p-4 sm:p-6 border-b border-slate-800 bg-slate-950/40 space-y-4">
           
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              <CalendarIcon className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <CalendarIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  {format(currentMonth, 'MMMM yyyy')}
+                </h2>
+                <p className="text-xs text-slate-400">
+                  Explore junior tournaments month by month
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                {format(currentMonth, 'MMMM yyyy')}
-              </h2>
-              <p className="text-xs text-slate-400">
-                Explore junior tournaments month by month
-              </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={goToToday}
+                className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
+              >
+                Today
+              </button>
+              <div className="flex items-center bg-slate-800/80 rounded-xl border border-slate-700 p-0.5">
+                <button
+                  onClick={prevMonth}
+                  className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+                  title="Previous Month"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={nextMonth}
+                  className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+                  title="Next Month"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={goToToday}
-              className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
-            >
-              Today
-            </button>
-            <div className="flex items-center bg-slate-800/80 rounded-xl border border-slate-700 p-0.5">
+          {/* Signup Date Display Toggle */}
+          <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-800/60">
+            <div className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+              <Filter className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Show Signup Dates:</span>
+            </div>
+            <div className="flex flex-wrap items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 gap-1">
               <button
-                onClick={prevMonth}
-                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
-                title="Previous Month"
+                onClick={() => setSignupDateDisplay('both')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  signupDateDisplay === 'both'
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Show both signup start and end dates"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <DoorOpen className="w-3 h-3" />
+                <DoorClosed className="w-3 h-3" />
+                <span>Both</span>
               </button>
               <button
-                onClick={nextMonth}
-                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
-                title="Next Month"
+                onClick={() => setSignupDateDisplay('start')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  signupDateDisplay === 'start'
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'text-emerald-400 hover:bg-emerald-950/40'
+                }`}
+                title="Show only signup start dates"
               >
-                <ChevronRight className="w-4 h-4" />
+                <DoorOpen className="w-3 h-3" />
+                <span>Start Only</span>
+              </button>
+              <button
+                onClick={() => setSignupDateDisplay('end')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  signupDateDisplay === 'end'
+                    ? 'bg-amber-600 text-white shadow-sm'
+                    : 'text-amber-400 hover:bg-amber-950/40'
+                }`}
+                title="Show only signup end/deadline dates"
+              >
+                <DoorClosed className="w-3 h-3" />
+                <span>End Only</span>
+              </button>
+              <button
+                onClick={() => setSignupDateDisplay('none')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  signupDateDisplay === 'none'
+                    ? 'bg-slate-700 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Hide signup dates"
+              >
+                None
               </button>
             </div>
           </div>
@@ -244,13 +321,15 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         <div className="grid grid-cols-7 auto-rows-fr bg-slate-950/20 divide-x divide-y divide-slate-800/60">
           {days.map((day, idx) => {
             const dayTournaments = getTournamentsForDay(day);
+            const signupOpens = getSignupOpensForDay(day);
+            const signupCloses = getSignupClosesForDay(day);
             const inMonth = isSameMonth(day, currentMonth);
             const isCurrentDay = isToday(day);
 
             return (
               <div
                 key={idx}
-                className={`min-h-[110px] sm:min-h-[135px] p-1.5 sm:p-2 flex flex-col justify-between transition-colors ${
+                className={`min-h-[110px] sm:min-h-[150px] p-1.5 sm:p-2 flex flex-col justify-between transition-colors ${
                   inMonth ? 'bg-slate-900/40 hover:bg-slate-900/80' : 'bg-slate-950/70 text-slate-600'
                 } ${isCurrentDay ? 'ring-2 ring-emerald-500 ring-inset' : ''}`}
               >
@@ -267,15 +346,22 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   >
                     {format(day, 'd')}
                   </span>
-                  {dayTournaments.length > 0 && (
-                    <span className="text-[10px] text-emerald-400 font-extrabold px-1 bg-emerald-950/40 rounded border border-emerald-900/40">
-                      {dayTournaments.length} {dayTournaments.length === 1 ? 'event' : 'events'}
-                    </span>
-                  )}
+                  <div className="flex flex-col gap-0.5">
+                    {dayTournaments.length > 0 && (
+                      <span className="text-[10px] text-emerald-400 font-extrabold px-1 bg-emerald-950/40 rounded border border-emerald-900/40">
+                        {dayTournaments.length} {dayTournaments.length === 1 ? 'event' : 'events'}
+                      </span>
+                    )}
+                    {(signupOpens.length > 0 || signupCloses.length > 0) && (
+                      <span className="text-[9px] text-purple-400 font-bold px-1 bg-purple-950/40 rounded border border-purple-900/40">
+                        {signupOpens.length + signupCloses.length} signup
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Tournament Badges on this day */}
-                <div className="space-y-1 overflow-y-auto max-h-[85px] sm:max-h-[95px] pr-0.5 custom-scrollbar">
+                <div className="space-y-1 overflow-y-auto max-h-[110px] sm:max-h-[120px] pr-0.5 custom-scrollbar">
                   {dayTournaments.map((t) => {
                     const isUSKG = t.tour === 'USKG';
                     const isSignedUp =
@@ -326,6 +412,36 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                       </button>
                     );
                   })}
+
+                  {/* Signup Open Date Badges */}
+                  {signupOpens.map((t) => (
+                    <button
+                      key={`signup-open-${t.id}`}
+                      onClick={() => onSelectTournament(t)}
+                      className="w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group bg-emerald-950/50 text-emerald-300 border-emerald-600/60 hover:border-emerald-400"
+                      title={`Signup opens for ${t.name}`}
+                    >
+                      <div className="flex items-center gap-1">
+                        <DoorOpen className="w-3 h-3 shrink-0" />
+                        <span className="truncate">{t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}</span>
+                      </div>
+                    </button>
+                  ))}
+
+                  {/* Signup Close/Deadline Date Badges */}
+                  {signupCloses.map((t) => (
+                    <button
+                      key={`signup-close-${t.id}`}
+                      onClick={() => onSelectTournament(t)}
+                      className="w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group bg-amber-950/50 text-amber-300 border-amber-600/60 hover:border-amber-400"
+                      title={`Signup closes for ${t.name}`}
+                    >
+                      <div className="flex items-center gap-1">
+                        <DoorClosed className="w-3 h-3 shrink-0" />
+                        <span className="truncate">{t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}</span>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
             );

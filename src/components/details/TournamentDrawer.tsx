@@ -19,7 +19,9 @@ import {
   CalendarPlus,
   Compass,
   Car,
-  Flag
+  Flag,
+  DoorOpen,
+  DoorClosed
 } from 'lucide-react';
 import { format, parseISO, differenceInCalendarDays } from 'date-fns';
 
@@ -59,6 +61,19 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
     }
   } catch {
     formattedDate = tournament.startDate;
+  }
+
+  // Registration Open Date info
+  let openDateFormatted = '';
+  let daysUntilOpen: number | null = null;
+  if (tournament.registrationOpenDate) {
+    try {
+      const openDateObj = parseISO(tournament.registrationOpenDate);
+      openDateFormatted = format(openDateObj, 'EEEE, MMMM d, yyyy');
+      daysUntilOpen = differenceInCalendarDays(openDateObj, new Date());
+    } catch {
+      openDateFormatted = tournament.registrationOpenDate;
+    }
   }
 
   // Registration Deadline info
@@ -158,8 +173,57 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
               </div>
             </div>
 
-            {/* Registration Deadline Card */}
+            {/* Registration Signup Dates Cards */}
+            {openDateFormatted && (
+              <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+                <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
+                  <DoorOpen className="w-4 h-4 text-emerald-400" />
+                  <span>Signup Opens</span>
+                </div>
+                <div className="text-sm font-bold text-white">{openDateFormatted}</div>
+                {daysUntilOpen !== null && daysUntilOpen > 0 && (
+                  <div className="text-xs text-emerald-400 mt-1">Opens in {daysUntilOpen} day{daysUntilOpen !== 1 ? 's' : ''}</div>
+                )}
+                {daysUntilOpen !== null && daysUntilOpen === 0 && (
+                  <div className="text-xs text-emerald-400 font-bold mt-1 animate-pulse">🎉 Opens Today!</div>
+                )}
+                {daysUntilOpen !== null && daysUntilOpen < 0 && (
+                  <div className="text-xs text-slate-500 mt-1">Already open</div>
+                )}
+              </div>
+            )}
+
             {deadlineFormatted && (
+              <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+                <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
+                  <DoorClosed className="w-4 h-4 text-amber-400" />
+                  <span>Signup Closes</span>
+                </div>
+                <div className="text-sm font-bold text-white">{deadlineFormatted}</div>
+                {daysUntilDeadline !== null && (
+                  <div className={`text-xs mt-1 ${
+                    daysUntilDeadline < 0
+                      ? 'text-slate-500'
+                      : daysUntilDeadline === 0
+                      ? 'text-rose-400 font-bold animate-pulse'
+                      : daysUntilDeadline <= 5
+                      ? 'text-amber-400 font-bold'
+                      : 'text-emerald-400'
+                  }`}>
+                    {daysUntilDeadline < 0
+                      ? 'Closed'
+                      : daysUntilDeadline === 0
+                      ? '🚨 Closes Today!'
+                      : daysUntilDeadline === 1
+                      ? '⚡ Closes Tomorrow'
+                      : `⏳ ${daysUntilDeadline} days left`}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Registration Deadline Card (old style, kept for backwards compatibility if no open date) */}
+            {!openDateFormatted && deadlineFormatted && (
               <div className="col-span-2 bg-gradient-to-r from-amber-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-amber-500/30 flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
