@@ -50,7 +50,8 @@ export interface Tournament {
   endDate: string;   // ISO format: YYYY-MM-DD
   duration: EventDuration;
   entryFee?: number;
-  registrationDeadline?: string;
+  registrationOpenDate?: string; // ISO format: YYYY-MM-DD - when signup opens
+  registrationDeadline?: string; // ISO format: YYYY-MM-DD - when signup closes
   registrationUrl?: string;
   playerRegistrations: Record<string, RegistrationStatus>; // playerId -> RegistrationStatus
   playerTeeTimes?: Record<string, string>; // playerId -> "10:54" or "10:54 AM"
@@ -117,3 +118,5 @@ export interface FilterState {
 }
 
 export type ViewMode = 'timeline' | 'calendar' | 'map' | 'players' | 'ingest';
+
+export type SignupDateDisplay = 'both' | 'start' | 'end' | 'none';
