@@ -19,7 +19,9 @@ import {
   CalendarPlus,
   Compass,
   Car,
-  Flag
+  Flag,
+  Play,
+  AlarmClock
 } from 'lucide-react';
 import { format, parseISO, differenceInCalendarDays } from 'date-fns';
 
@@ -71,6 +73,19 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
       daysUntilDeadline = differenceInCalendarDays(deadlineDateObj, new Date());
     } catch {
       deadlineFormatted = tournament.registrationDeadline;
+    }
+  }
+
+  // Registration Opens info
+  let opensFormatted = '';
+  let daysUntilOpens: number | null = null;
+  if (tournament.registrationOpens) {
+    try {
+      const opensDateObj = parseISO(tournament.registrationOpens);
+      opensFormatted = format(opensDateObj, 'EEEE, MMMM d, yyyy');
+      daysUntilOpens = differenceInCalendarDays(opensDateObj, new Date());
+    } catch {
+      opensFormatted = tournament.registrationOpens;
     }
   }
 
@@ -158,34 +173,71 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
               </div>
             </div>
 
-            {/* Registration Deadline Card */}
-            {deadlineFormatted && (
-              <div className="col-span-2 bg-gradient-to-r from-amber-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-amber-500/30 flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
-                    <Clock className="w-4 h-4" />
-                    <span>Registration Deadline</span>
+            {/* Signup Dates Card - Start and End */}
+            {(opensFormatted || deadlineFormatted) && (
+              <div className="col-span-2 space-y-2">
+                {/* Signup Opens (Start) */}
+                {opensFormatted && (
+                  <div className="bg-gradient-to-r from-emerald-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 text-emerald-400 text-xs font-bold mb-1">
+                        <Play className="w-4 h-4" />
+                        <span>Signup Starts</span>
+                      </div>
+                      <div className="text-sm font-extrabold text-white">{opensFormatted}</div>
+                    </div>
+                    {daysUntilOpens !== null && (
+                      <span className={`text-xs font-extrabold px-3 py-1 rounded-xl border ${
+                        daysUntilOpens < 0
+                          ? 'bg-slate-900 text-slate-500 border-slate-800'
+                          : daysUntilOpens === 0
+                          ? 'bg-emerald-950 text-emerald-300 border-emerald-500 animate-pulse'
+                          : daysUntilOpens <= 5
+                          ? 'bg-emerald-950 text-emerald-300 border-emerald-500'
+                          : 'bg-emerald-950/40 text-emerald-400 border-emerald-500/40'
+                      }`}>
+                        {daysUntilOpens < 0
+                          ? 'Open'
+                          : daysUntilOpens === 0
+                          ? '🎉 Opens Today!'
+                          : daysUntilOpens === 1
+                          ? '⚡ Opens Tomorrow'
+                          : `Opens in ${daysUntilOpens} days`}
+                      </span>
+                    )}
                   </div>
-                  <div className="text-sm font-extrabold text-white">{deadlineFormatted}</div>
-                </div>
-                {daysUntilDeadline !== null && (
-                  <span className={`text-xs font-extrabold px-3 py-1 rounded-xl border ${
-                    daysUntilDeadline < 0
-                      ? 'bg-slate-900 text-slate-500 border-slate-800'
-                      : daysUntilDeadline === 0
-                      ? 'bg-rose-950 text-rose-300 border-rose-500 animate-pulse'
-                      : daysUntilDeadline <= 5
-                      ? 'bg-amber-950 text-amber-300 border-amber-500'
-                      : 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
-                  }`}>
-                    {daysUntilDeadline < 0
-                      ? 'Closed'
-                      : daysUntilDeadline === 0
-                      ? '🚨 Closes Today!'
-                      : daysUntilDeadline === 1
-                      ? '⚡ Closes Tomorrow'
-                      : `⏳ In ${daysUntilDeadline} days`}
-                  </span>
+                )}
+
+                {/* Signup Deadline (End) */}
+                {deadlineFormatted && (
+                  <div className="bg-gradient-to-r from-amber-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-amber-500/30 flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
+                        <AlarmClock className="w-4 h-4" />
+                        <span>Signup Ends</span>
+                      </div>
+                      <div className="text-sm font-extrabold text-white">{deadlineFormatted}</div>
+                    </div>
+                    {daysUntilDeadline !== null && (
+                      <span className={`text-xs font-extrabold px-3 py-1 rounded-xl border ${
+                        daysUntilDeadline < 0
+                          ? 'bg-slate-900 text-slate-500 border-slate-800'
+                          : daysUntilDeadline === 0
+                          ? 'bg-rose-950 text-rose-300 border-rose-500 animate-pulse'
+                          : daysUntilDeadline <= 5
+                          ? 'bg-amber-950 text-amber-300 border-amber-500'
+                          : 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
+                      }`}>
+                        {daysUntilDeadline < 0
+                          ? 'Closed'
+                          : daysUntilDeadline === 0
+                          ? '🚨 Closes Today!'
+                          : daysUntilDeadline === 1
+                          ? '⚡ Closes Tomorrow'
+                          : `⏳ In ${daysUntilDeadline} days`}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
             )}
