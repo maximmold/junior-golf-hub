@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Tournament, Player, UserLocation } from '../../types/tournament';
+import { Tournament, Player, UserLocation, CalendarMode, SignupDateFilter } from '../../types/tournament';
 import { calculateDistanceAndETA } from '../../services/distanceService';
 import { 
   format, 
@@ -17,7 +17,7 @@ import {
   differenceInCalendarDays
 } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
-import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, ChevronRight as ChevronRightIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, MapPin, Calendar as CalendarIcon, ChevronRight as ChevronRightIcon, Play, AlarmClock } from 'lucide-react';
 
 interface CalendarViewProps {
   tournaments: Tournament[];
@@ -36,6 +36,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   // Default calendar month: start at August 2026 or current month
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 7, 1)); // August 2026
+  const [calendarMode, setCalendarMode] = useState<CalendarMode>('event');
+  const [signupDateFilter, setSignupDateFilter] = useState<SignupDateFilter>('both');
 
   // Today in America/New_York
   const todayStr = useMemo(() => {
@@ -84,7 +86,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
   const goToToday = () => setCurrentMonth(new Date());
 
-  // Helper to find tournaments on a given day
+  // Helper to find tournaments on a given day (event mode)
   const getTournamentsForDay = (day: Date): Tournament[] => {
     const dayStr = format(day, 'yyyy-MM-dd');
     return tournaments.filter((t) => {
@@ -92,6 +94,27 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       if (t.endDate >= dayStr && t.startDate <= dayStr) return true;
       return false;
     });
+  };
+
+  // Helper to find signup dates on a given day (signup mode)
+  const getSignupDatesForDay = (day: Date): { tournament: Tournament; type: 'start' | 'end' }[] => {
+    const dayStr = format(day, 'yyyy-MM-dd');
+    const result: { tournament: Tournament; type: 'start' | 'end' }[] = [];
+    
+    tournaments.forEach((t) => {
+      if (signupDateFilter === 'both' || signupDateFilter === 'start') {
+        if (t.registrationOpens === dayStr) {
+          result.push({ tournament: t, type: 'start' });
+        }
+      }
+      if (signupDateFilter === 'both' || signupDateFilter === 'end') {
+        if (t.registrationDeadline === dayStr) {
+          result.push({ tournament: t, type: 'end' });
+        }
+      }
+    });
+    
+    return result;
   };
 
   return (
@@ -110,7 +133,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                 {format(currentMonth, 'MMMM yyyy')}
               </h2>
               <p className="text-xs text-slate-400">
-                Explore junior tournaments month by month
+                {calendarMode === 'event' ? 'Tournament dates' : 'Signup windows'}
               </p>
             </div>
           </div>
@@ -140,6 +163,73 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             </div>
           </div>
 
+        </div>
+
+        {/* Calendar Mode Toggle & Signup Date Filter */}
+        <div className="px-4 sm:px-6 py-3 border-b border-slate-800 bg-slate-950/20 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          {/* Calendar Mode Toggle */}
+          <div className="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 gap-1">
+            <span className="text-[10px] uppercase font-bold text-slate-400 px-1.5">View:</span>
+            <button
+              onClick={() => setCalendarMode('event')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                calendarMode === 'event'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              📅 Events
+            </button>
+            <button
+              onClick={() => setCalendarMode('signup')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                calendarMode === 'signup'
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'text-amber-400 hover:text-amber-300'
+              }`}
+            >
+              ✍️ Signup
+            </button>
+          </div>
+
+          {/* Signup Date Filter (only visible in signup mode) */}
+          {calendarMode === 'signup' && (
+            <div className="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 gap-1">
+              <span className="text-[10px] uppercase font-bold text-slate-400 px-1.5">Show:</span>
+              <button
+                onClick={() => setSignupDateFilter('both')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  signupDateFilter === 'both'
+                    ? 'bg-slate-700 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Both
+              </button>
+              <button
+                onClick={() => setSignupDateFilter('start')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                  signupDateFilter === 'start'
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : 'text-emerald-400 hover:bg-emerald-950/40'
+                }`}
+              >
+                <Play className="w-3 h-3" />
+                <span>Start</span>
+              </button>
+              <button
+                onClick={() => setSignupDateFilter('end')}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                  signupDateFilter === 'end'
+                    ? 'bg-amber-600 text-white shadow-sm'
+                    : 'text-amber-400 hover:bg-amber-950/40'
+                }`}
+              >
+                <AlarmClock className="w-3 h-3" />
+                <span>End</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Compact Next Up + Next Sign-up Strip */}
@@ -243,7 +333,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         {/* Month Day Grid */}
         <div className="grid grid-cols-7 auto-rows-fr bg-slate-950/20 divide-x divide-y divide-slate-800/60">
           {days.map((day, idx) => {
-            const dayTournaments = getTournamentsForDay(day);
+            const dayTournaments = calendarMode === 'event' ? getTournamentsForDay(day) : [];
+            const signupDates = calendarMode === 'signup' ? getSignupDatesForDay(day) : [];
             const inMonth = isSameMonth(day, currentMonth);
             const isCurrentDay = isToday(day);
 
@@ -267,66 +358,98 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   >
                     {format(day, 'd')}
                   </span>
-                  {dayTournaments.length > 0 && (
+                  {calendarMode === 'event' && dayTournaments.length > 0 && (
                     <span className="text-[10px] text-emerald-400 font-extrabold px-1 bg-emerald-950/40 rounded border border-emerald-900/40">
                       {dayTournaments.length} {dayTournaments.length === 1 ? 'event' : 'events'}
                     </span>
                   )}
+                  {calendarMode === 'signup' && signupDates.length > 0 && (
+                    <span className="text-[10px] text-amber-400 font-extrabold px-1 bg-amber-950/40 rounded border border-amber-900/40">
+                      {signupDates.length}
+                    </span>
+                  )}
                 </div>
 
-                {/* Tournament Badges on this day */}
-                <div className="space-y-1 overflow-y-auto max-h-[85px] sm:max-h-[95px] pr-0.5 custom-scrollbar">
-                  {dayTournaments.map((t) => {
-                    const isUSKG = t.tour === 'USKG';
-                    const isSignedUp =
-                      selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'registered')
-                        : t.playerRegistrations[selectedPlayerId] === 'registered';
+                {/* Event Mode: Tournament Badges on this day */}
+                {calendarMode === 'event' && (
+                  <div className="space-y-1 overflow-y-auto max-h-[85px] sm:max-h-[95px] pr-0.5 custom-scrollbar">
+                    {dayTournaments.map((t) => {
+                      const isUSKG = t.tour === 'USKG';
+                      const isSignedUp =
+                        selectedPlayerId === 'ALL'
+                          ? Object.values(t.playerRegistrations).some((s) => s === 'registered')
+                          : t.playerRegistrations[selectedPlayerId] === 'registered';
 
-                    const isContingent =
-                      selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'contingent')
-                        : t.playerRegistrations[selectedPlayerId] === 'contingent';
+                      const isContingent =
+                        selectedPlayerId === 'ALL'
+                          ? Object.values(t.playerRegistrations).some((s) => s === 'contingent')
+                          : t.playerRegistrations[selectedPlayerId] === 'contingent';
 
-                    const isConsidering =
-                      selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'considering')
-                        : t.playerRegistrations[selectedPlayerId] === 'considering';
+                      const isConsidering =
+                        selectedPlayerId === 'ALL'
+                          ? Object.values(t.playerRegistrations).some((s) => s === 'considering')
+                          : t.playerRegistrations[selectedPlayerId] === 'considering';
 
-                    const isMultiDay = t.duration === '2-Day';
+                      const isMultiDay = t.duration === '2-Day';
 
-                    return (
-                      <button
-                        key={t.id}
-                        onClick={() => onSelectTournament(t)}
-                        className={`w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group ${
-                          isSignedUp
-                            ? 'bg-amber-950/50 text-amber-300 border-amber-500/60 hover:border-amber-400'
-                            : isContingent
-                            ? 'bg-orange-950/60 text-orange-300 border-orange-500/70 hover:border-orange-400'
-                            : isUSKG
-                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/50 hover:border-emerald-500'
-                            : 'bg-blue-950/60 text-blue-300 border-blue-700/50 hover:border-blue-500'
-                        }`}
-                        title={`${t.name} at ${t.course.name}`}
-                      >
-                        <div className="flex items-center justify-between gap-1">
-                          <span className="truncate flex items-center gap-1">
-                            {isSignedUp && <span>⭐</span>}
-                            {isContingent && <span>🔶</span>}
-                            {isConsidering && <span>❔</span>}
-                            {t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}
-                          </span>
-                          {isMultiDay && (
-                            <span className="text-[9px] uppercase px-1 rounded bg-purple-900/60 text-purple-200 shrink-0 font-bold">
-                              2D
+                      return (
+                        <button
+                          key={t.id}
+                          onClick={() => onSelectTournament(t)}
+                          className={`w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group ${
+                            isSignedUp
+                              ? 'bg-amber-950/50 text-amber-300 border-amber-500/60 hover:border-amber-400'
+                              : isContingent
+                              ? 'bg-orange-950/60 text-orange-300 border-orange-500/70 hover:border-orange-400'
+                              : isUSKG
+                              ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/50 hover:border-emerald-500'
+                              : 'bg-blue-950/60 text-blue-300 border-blue-700/50 hover:border-blue-500'
+                          }`}
+                          title={`${t.name} at ${t.course.name}`}
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="truncate flex items-center gap-1">
+                              {isSignedUp && <span>⭐</span>}
+                              {isContingent && <span>🔶</span>}
+                              {isConsidering && <span>❔</span>}
+                              {t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}
                             </span>
-                          )}
+                            {isMultiDay && (
+                              <span className="text-[9px] uppercase px-1 rounded bg-purple-900/60 text-purple-200 shrink-0 font-bold">
+                                2D
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Signup Mode: Signup Date Markers */}
+                {calendarMode === 'signup' && (
+                  <div className="space-y-1 overflow-y-auto max-h-[85px] sm:max-h-[95px] pr-0.5 custom-scrollbar">
+                    {signupDates.map(({ tournament, type }, i) => (
+                      <button
+                        key={`${tournament.id}-${type}-${i}`}
+                        onClick={() => onSelectTournament(tournament)}
+                        className={`w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group ${
+                          type === 'start'
+                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/50 hover:border-emerald-500'
+                            : 'bg-amber-950/60 text-amber-300 border-amber-700/50 hover:border-amber-500'
+                        }`}
+                        title={`${type === 'start' ? 'Signup opens' : 'Signup deadline'} for ${tournament.name}`}
+                      >
+                        <div className="flex items-center gap-1">
+                          {type === 'start' ? <Play className="w-3 h-3 shrink-0" /> : <AlarmClock className="w-3 h-3 shrink-0" />}
+                          <span className="truncate">
+                            {tournament.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}
+                          </span>
                         </div>
                       </button>
-                    );
-                  })}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
