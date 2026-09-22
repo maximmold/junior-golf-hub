@@ -453,6 +453,51 @@ export const COURSES: Record<string, Course> = {
     holes: 18,
     par: 70,
     facilityType: 'Public'
+  },
+  'palmetto-dunes-arthur-hills': {
+    id: 'palmetto-dunes-arthur-hills',
+    name: 'Palmetto Dunes Resort - Arthur Hills Course',
+    address: '7 Trent Jones Ln',
+    city: 'Hilton Head Island',
+    state: 'SC',
+    zip: '29928',
+    lat: 32.1845,
+    lng: -80.7345,
+    phone: '(843) 785-1138',
+    website: 'https://palmettodunes.com',
+    holes: 18,
+    par: 72,
+    facilityType: 'Resort'
+  },
+  'wild-dunes': {
+    id: 'wild-dunes',
+    name: 'Wild Dunes Resort',
+    address: '5757 Palm Blvd',
+    city: 'Isle of Palms',
+    state: 'SC',
+    zip: '29451',
+    lat: 32.7945,
+    lng: -79.7645,
+    phone: '(843) 886-2180',
+    website: 'https://wilddunes.com',
+    holes: 36,
+    par: 72,
+    facilityType: 'Resort'
+  },
+  'unc-finley': {
+    id: 'unc-finley',
+    name: 'UNC Finley Golf Course',
+    address: 'Finley Golf Course Rd',
+    city: 'Chapel Hill',
+    state: 'NC',
+    zip: '27517',
+    lat: 35.9045,
+    lng: -79.0445,
+    phone: '(919) 962-2349',
+    website: 'https://finleygolfcourse.com',
+    holes: 18,
+    par: 72,
+    facilityType: 'Public'
   }
 };
 

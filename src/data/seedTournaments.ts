@@ -468,6 +468,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-06',
     endDate: '2026-11-06',
     duration: '1-Day',
+    entryFee: 50,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: 'Qualifier',
     season: 'Fall'
@@ -482,6 +483,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-07',
     endDate: '2026-11-08',
     duration: '2-Day',
+    entryFee: 200,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Fall Challenge',
     season: 'Fall',
@@ -497,6 +499,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-08',
     endDate: '2026-11-08',
     duration: '1-Day',
+    registrationOpenDate: '2026-09-27',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play',
     season: 'Fall'
@@ -526,6 +529,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-14',
     endDate: '2026-11-14',
     duration: '1-Day',
+    registrationOpenDate: '2026-10-03',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play',
     season: 'Fall'
@@ -540,8 +544,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-14',
     endDate: '2026-11-15',
     duration: '2-Day',
+    entryFee: 180,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play',
+    notes: 'Easley SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -555,9 +561,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-22',
     duration: '2-Day',
+    registrationOpenDate: '2026-09-24',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Major Championship',
-    notes: 'Celebrating 30 years of the Players Championship.',
+    notes: 'Celebrating 30 years of the Players Championship. CONFLICT: Family PR trip Nov 22-26.',
     season: 'Fall',
     isMajor: true
   },
@@ -571,6 +578,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-21',
     duration: '1-Day',
+    registrationOpenDate: '2026-10-10',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play (Florence)',
     season: 'Fall'
@@ -585,9 +593,51 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-22',
     duration: '2-Day',
+    registrationOpenDate: '2026-09-28',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play',
+    notes: 'Loris SC.',
     season: 'Fall',
+    isMajor: true
+  },
+
+  // =========================================================================
+  // 3. HJGT TOURNAMENT
+  // =========================================================================
+  {
+    id: 'hjgt-2026-11-14-15-unc-finley',
+    name: 'HJGT College Prep @ UNC Finley',
+    tour: 'OTHER',
+    tourSeries: 'HJGT',
+    courseId: 'unc-finley',
+    course: COURSES['unc-finley'],
+    startDate: '2026-11-14',
+    endDate: '2026-11-15',
+    duration: '2-Day',
+    playerRegistrations: { 'player-owen': 'considering' },
+    yardageOrFormat: 'College Prep - 36 Holes',
+    notes: 'Hold - do not register (Maxim decision). Chapel Hill NC.',
+    season: 'Fall'
+  },
+
+  // =========================================================================
+  // 4. DECEMBER SCJGA TOURNAMENTS
+  // =========================================================================
+  {
+    id: 'scjga-2026-12-05-06-hootie-all-stars',
+    name: 'Hootie All Stars',
+    tour: 'SCJGA',
+    tourSeries: 'Major Championship',
+    courseId: 'palmetto-dunes-arthur-hills',
+    course: COURSES['palmetto-dunes-arthur-hills'],
+    startDate: '2026-12-05',
+    endDate: '2026-12-06',
+    duration: '2-Day',
+    registrationOpenDate: '2026-10-01',
+    playerRegistrations: { 'player-owen': 'open' },
+    yardageOrFormat: '36-Hole Championship',
+    notes: 'Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
+    season: 'Winter',
     isMajor: true
   },
   {
@@ -600,8 +650,26 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-12-12',
     endDate: '2026-12-13',
     duration: '2-Day',
+    registrationOpenDate: '2026-10-13',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play (Bluffton)',
+    season: 'Winter',
+    isMajor: true
+  },
+  {
+    id: 'scjga-2026-12-21-22-ford-picard',
+    name: 'Ford-Picard Christmas Classic',
+    tour: 'SCJGA',
+    tourSeries: 'Major Championship',
+    courseId: 'wild-dunes',
+    course: COURSES['wild-dunes'],
+    startDate: '2026-12-21',
+    endDate: '2026-12-22',
+    duration: '2-Day',
+    registrationOpenDate: '2026-10-19',
+    playerRegistrations: { 'player-owen': 'open' },
+    yardageOrFormat: '36-Hole Christmas Classic',
+    notes: 'Wild Dunes Resort, Isle of Palms.',
     season: 'Winter',
     isMajor: true
   }
