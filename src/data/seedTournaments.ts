@@ -326,7 +326,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Registration Accepted. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
+    notes: 'Active - payment approved Sep 18 (live BlueGolf verified Sep 22). Practice tip: call club (803) 345-9909. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
     season: 'Fall',
     isMajor: true
   },
@@ -361,7 +361,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Junior Championship - Boys 13-15',
-    notes: 'Pending - awaiting approval. Cobb\'s Glen CC.',
+    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-15 division. Cobb\'s Glen CC, Anderson SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -390,8 +390,8 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-18',
     duration: '1-Day',
     playerRegistrations: { 'player-owen': 'not_registered' },
-    yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Cancelled - cancel processed Sep 8 (Crowfield Tour Championship same day).',
+    yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
+    notes: 'Cancelled, No Refund (was registered then cancelled - not active on live BlueGolf Sep 22). Crowfield Tour Championship same day.',
     season: 'Fall'
   },
   {
@@ -423,7 +423,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 30,
     playerRegistrations: { 'player-owen': 'contingent' },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Pending approval; still backup vs Rick Vieth if Vieth is registered. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Same Sat conflict flagged.',
+    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-19 division. Still backup vs Rick Vieth. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Same Sat conflict flagged.',
     season: 'Fall'
   },
   {
@@ -439,7 +439,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 180,
     playerRegistrations: { 'player-owen': 'registered' },
     yardageOrFormat: 'Four-Ball Format - Boys 13-18',
-    notes: 'Registered - friend entered Owen; no Owen/Maxim confirmation email expected. Keeping both this and CC Lexington (Oct 24, Pending) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged. The Fort Club, Ninety Six SC.',
+    notes: 'Friend entry claimed; NOT visible on Owen\'s BlueGolf as of Sep 22 live check; may be under partner account. Keeping both this and CC Lexington (Oct 24, Pending) as backup until one is accepted. Same Sat conflict flagged. The Fort Club, Ninety Six SC.',
     season: 'Fall',
     isMajor: true
   },
