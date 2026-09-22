@@ -323,10 +323,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-18',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/schedule/upcoming.htm?display=champ',
     playerRegistrations: {
-      'player-owen': 'contingent',
+      'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Pending - awaiting approval. Conflicts with Village Greens One Day (Oct 4).',
+    notes: 'Registration Accepted. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
     season: 'Fall',
     isMajor: true
   },
@@ -341,10 +341,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-04',
     duration: '1-Day',
     playerRegistrations: {
-      'player-owen': 'registered',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Active/Accepted. Boys 13-19 division. Conflicts with Players Series @ Timberlake (Oct 3-4).',
+    notes: 'Withdrawn Sep 20; cancelled/refunded Sep 21. Conflicts with Players Series @ Timberlake (Oct 3-4).',
     season: 'Fall'
   },
   {
@@ -423,7 +423,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 30,
     playerRegistrations: { 'player-owen': 'contingent' },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Pending - Registration Acknowledgment received ~Sep 12 night. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged.',
+    notes: 'Pending approval; still backup vs Rick Vieth if Vieth is registered. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Same Sat conflict flagged.',
     season: 'Fall'
   },
   {

@@ -364,49 +364,60 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                 <div className="space-y-1 overflow-y-auto max-h-[110px] sm:max-h-[120px] pr-0.5 custom-scrollbar">
                   {dayTournaments.map((t) => {
                     const isUSKG = t.tour === 'USKG';
-                    const isSignedUp =
+                    const playerStatus = 
                       selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'registered')
-                        : t.playerRegistrations[selectedPlayerId] === 'registered';
+                        ? Object.values(t.playerRegistrations).find(s => s === 'registered' || s === 'contingent' || s === 'waitlist') || 'not_registered'
+                        : t.playerRegistrations[selectedPlayerId] || 'not_registered';
 
-                    const isContingent =
-                      selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'contingent')
-                        : t.playerRegistrations[selectedPlayerId] === 'contingent';
-
-                    const isConsidering =
-                      selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).some((s) => s === 'considering')
-                        : t.playerRegistrations[selectedPlayerId] === 'considering';
+                    const isSignedUp = playerStatus === 'registered';
+                    const isContingent = playerStatus === 'contingent';
+                    const isWaitlist = playerStatus === 'waitlist';
+                    const isConsidering = playerStatus === 'considering';
 
                     const isMultiDay = t.duration === '2-Day';
+
+                    // Status badge text and styling
+                    let statusBadge = null;
+                    if (isSignedUp) {
+                      statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200 border border-amber-400/50">⭐ Accepted</span>;
+                    } else if (isContingent) {
+                      statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-orange-500/30 text-orange-200 border border-orange-400/50">🔶 Pending</span>;
+                    } else if (isWaitlist) {
+                      statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200 border border-purple-400/50">⏳ Waitlist</span>;
+                    }
 
                     return (
                       <button
                         key={t.id}
                         onClick={() => onSelectTournament(t)}
-                        className={`w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block truncate shadow-sm group ${
+                        className={`w-full text-left p-1 sm:p-1.5 rounded-lg text-[10px] sm:text-[11px] font-semibold transition-all border block shadow-sm group ${
                           isSignedUp
-                            ? 'bg-amber-950/50 text-amber-300 border-amber-500/60 hover:border-amber-400'
+                            ? 'bg-amber-950/60 text-amber-200 border-amber-500/70 hover:border-amber-400 hover:bg-amber-950/80'
                             : isContingent
-                            ? 'bg-orange-950/60 text-orange-300 border-orange-500/70 hover:border-orange-400'
+                            ? 'bg-orange-950/60 text-orange-200 border-orange-500/70 hover:border-orange-400 hover:bg-orange-950/80'
+                            : isWaitlist
+                            ? 'bg-purple-950/60 text-purple-200 border-purple-500/70 hover:border-purple-400 hover:bg-purple-950/80'
                             : isUSKG
                             ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/50 hover:border-emerald-500'
                             : 'bg-blue-950/60 text-blue-300 border-blue-700/50 hover:border-blue-500'
                         }`}
                         title={`${t.name} at ${t.course.name}`}
                       >
-                        <div className="flex items-center justify-between gap-1">
-                          <span className="truncate flex items-center gap-1">
-                            {isSignedUp && <span>⭐</span>}
-                            {isContingent && <span>🔶</span>}
-                            {isConsidering && <span>❔</span>}
-                            {t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}
-                          </span>
-                          {isMultiDay && (
-                            <span className="text-[9px] uppercase px-1 rounded bg-purple-900/60 text-purple-200 shrink-0 font-bold">
-                              2D
+                        <div className="space-y-0.5">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="truncate flex items-center gap-1">
+                              {t.course.name.replace(' Golf Club', '').replace(' Country Club', ' CC')}
                             </span>
+                            {isMultiDay && (
+                              <span className="text-[9px] uppercase px-1 rounded bg-purple-900/60 text-purple-200 shrink-0 font-bold">
+                                2D
+                              </span>
+                            )}
+                          </div>
+                          {statusBadge && (
+                            <div className="flex items-center">
+                              {statusBadge}
+                            </div>
                           )}
                         </div>
                       </button>
