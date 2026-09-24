@@ -173,86 +173,60 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
               </div>
             </div>
 
-            {/* Registration Signup Dates Cards */}
-            {openDateFormatted && (
-              <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
-                <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
-                  <DoorOpen className="w-4 h-4 text-emerald-400" />
-                  <span>Signup Opens</span>
-                </div>
-                <div className="text-sm font-bold text-white">{openDateFormatted}</div>
-                {daysUntilOpen !== null && daysUntilOpen > 0 && (
-                  <div className="text-xs text-emerald-400 mt-1">Opens in {daysUntilOpen} day{daysUntilOpen !== 1 ? 's' : ''}</div>
-                )}
-                {daysUntilOpen !== null && daysUntilOpen === 0 && (
-                  <div className="text-xs text-emerald-400 font-bold mt-1 animate-pulse">🎉 Opens Today!</div>
-                )}
-                {daysUntilOpen !== null && daysUntilOpen < 0 && (
-                  <div className="text-xs text-slate-500 mt-1">Already open</div>
-                )}
+            {/* Registration Signup Dates Cards - Always shown */}
+            <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+              <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
+                <DoorOpen className="w-4 h-4 text-emerald-400" />
+                <span>Signup Opens</span>
               </div>
-            )}
+              <div className="text-sm font-bold text-white">
+                {openDateFormatted || 'TBA'}
+              </div>
+              {openDateFormatted && daysUntilOpen !== null && daysUntilOpen > 0 && (
+                <div className="text-xs text-emerald-400 mt-1">Opens in {daysUntilOpen} day{daysUntilOpen !== 1 ? 's' : ''}</div>
+              )}
+              {openDateFormatted && daysUntilOpen !== null && daysUntilOpen === 0 && (
+                <div className="text-xs text-emerald-400 font-bold mt-1 animate-pulse">🎉 Opens Today!</div>
+              )}
+              {openDateFormatted && daysUntilOpen !== null && daysUntilOpen < 0 && (
+                <div className="text-xs text-slate-500 mt-1">Already open</div>
+              )}
+              {!openDateFormatted && (
+                <div className="text-xs text-slate-500 mt-1">Date not yet announced</div>
+              )}
+            </div>
 
-            {deadlineFormatted && (
-              <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
-                <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
-                  <DoorClosed className="w-4 h-4 text-amber-400" />
-                  <span>Signup Closes</span>
-                </div>
-                <div className="text-sm font-bold text-white">{deadlineFormatted}</div>
-                {daysUntilDeadline !== null && (
-                  <div className={`text-xs mt-1 ${
-                    daysUntilDeadline < 0
-                      ? 'text-slate-500'
-                      : daysUntilDeadline === 0
-                      ? 'text-rose-400 font-bold animate-pulse'
-                      : daysUntilDeadline <= 5
-                      ? 'text-amber-400 font-bold'
-                      : 'text-emerald-400'
-                  }`}>
-                    {daysUntilDeadline < 0
-                      ? 'Closed'
-                      : daysUntilDeadline === 0
-                      ? '🚨 Closes Today!'
-                      : daysUntilDeadline === 1
-                      ? '⚡ Closes Tomorrow'
-                      : `⏳ ${daysUntilDeadline} days left`}
-                  </div>
-                )}
+            <div className="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+              <div className="flex items-center gap-2 text-slate-400 text-xs mb-1">
+                <DoorClosed className="w-4 h-4 text-amber-400" />
+                <span>Signup Closes</span>
               </div>
-            )}
-
-            {/* Registration Deadline Card (old style, kept for backwards compatibility if no open date) */}
-            {!openDateFormatted && deadlineFormatted && (
-              <div className="col-span-2 bg-gradient-to-r from-amber-950/40 via-slate-950/70 to-slate-950/70 p-3.5 rounded-2xl border border-amber-500/30 flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-amber-400 text-xs font-bold mb-1">
-                    <Clock className="w-4 h-4" />
-                    <span>Registration Deadline</span>
-                  </div>
-                  <div className="text-sm font-extrabold text-white">{deadlineFormatted}</div>
-                </div>
-                {daysUntilDeadline !== null && (
-                  <span className={`text-xs font-extrabold px-3 py-1 rounded-xl border ${
-                    daysUntilDeadline < 0
-                      ? 'bg-slate-900 text-slate-500 border-slate-800'
-                      : daysUntilDeadline === 0
-                      ? 'bg-rose-950 text-rose-300 border-rose-500 animate-pulse'
-                      : daysUntilDeadline <= 5
-                      ? 'bg-amber-950 text-amber-300 border-amber-500'
-                      : 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
-                  }`}>
-                    {daysUntilDeadline < 0
-                      ? 'Closed'
-                      : daysUntilDeadline === 0
-                      ? '🚨 Closes Today!'
-                      : daysUntilDeadline === 1
-                      ? '⚡ Closes Tomorrow'
-                      : `⏳ In ${daysUntilDeadline} days`}
-                  </span>
-                )}
+              <div className="text-sm font-bold text-white">
+                {deadlineFormatted || 'TBA'}
               </div>
-            )}
+              {deadlineFormatted && daysUntilDeadline !== null && (
+                <div className={`text-xs mt-1 ${
+                  daysUntilDeadline < 0
+                    ? 'text-slate-500'
+                    : daysUntilDeadline === 0
+                    ? 'text-rose-400 font-bold animate-pulse'
+                    : daysUntilDeadline <= 5
+                    ? 'text-amber-400 font-bold'
+                    : 'text-emerald-400'
+                }`}>
+                  {daysUntilDeadline < 0
+                    ? 'Closed'
+                    : daysUntilDeadline === 0
+                    ? '🚨 Closes Today!'
+                    : daysUntilDeadline === 1
+                    ? '⚡ Closes Tomorrow'
+                    : `⏳ ${daysUntilDeadline} days left`}
+                </div>
+              )}
+              {!deadlineFormatted && (
+                <div className="text-xs text-slate-500 mt-1">Date not yet announced</div>
+              )}
+            </div>
           </div>
 
           {/* Turn-by-Turn Navigation Launchers */}
