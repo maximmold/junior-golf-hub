@@ -323,10 +323,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-09-18',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/schedule/upcoming.htm?display=champ',
     playerRegistrations: {
-      'player-owen': 'contingent',
+      'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Pending - awaiting approval. Conflicts with Village Greens One Day (Oct 4).',
+    notes: 'Active - payment approved Sep 18 (live BlueGolf verified Sep 22). Practice tip: call club (803) 345-9909. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
     season: 'Fall',
     isMajor: true
   },
@@ -341,10 +341,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-04',
     duration: '1-Day',
     playerRegistrations: {
-      'player-owen': 'registered',
+      'player-owen': 'not_registered',
     },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Active/Accepted. Boys 13-19 division. Conflicts with Players Series @ Timberlake (Oct 3-4).',
+    notes: 'Withdrawn Sep 20; cancelled/refunded Sep 21. Conflicts with Players Series @ Timberlake (Oct 3-4).',
     season: 'Fall'
   },
   {
@@ -361,7 +361,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Junior Championship - Boys 13-15',
-    notes: 'Pending - awaiting approval. Cobb\'s Glen CC.',
+    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-15 division. Cobb\'s Glen CC, Anderson SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -390,8 +390,8 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     endDate: '2026-10-18',
     duration: '1-Day',
     playerRegistrations: { 'player-owen': 'not_registered' },
-    yardageOrFormat: '18-Hole Stroke Play',
-    notes: 'Cancelled - cancel processed Sep 8 (Crowfield Tour Championship same day).',
+    yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
+    notes: 'Cancelled, No Refund (was registered then cancelled - not active on live BlueGolf Sep 22). Crowfield Tour Championship same day.',
     season: 'Fall'
   },
   {
@@ -423,7 +423,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 30,
     playerRegistrations: { 'player-owen': 'contingent' },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Pending - Registration Acknowledgment received ~Sep 12 night. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged.',
+    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-19 division. Still backup vs Rick Vieth. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Same Sat conflict flagged.',
     season: 'Fall'
   },
   {
@@ -439,7 +439,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     entryFee: 180,
     playerRegistrations: { 'player-owen': 'registered' },
     yardageOrFormat: 'Four-Ball Format - Boys 13-18',
-    notes: 'Registered - friend entered Owen; no Owen/Maxim confirmation email expected. Keeping both this and CC Lexington (Oct 24, Pending) as backup until one is accepted. Will not withdraw yet. Same Sat conflict flagged. The Fort Club, Ninety Six SC.',
+    notes: 'Friend entry claimed; NOT visible on Owen\'s BlueGolf as of Sep 22 live check; may be under partner account. Keeping both this and CC Lexington (Oct 24, Pending) as backup until one is accepted. Same Sat conflict flagged. The Fort Club, Ninety Six SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -468,6 +468,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-06',
     endDate: '2026-11-06',
     duration: '1-Day',
+    entryFee: 50,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: 'Qualifier',
     season: 'Fall'
@@ -482,6 +483,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-07',
     endDate: '2026-11-08',
     duration: '2-Day',
+    entryFee: 200,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Fall Challenge',
     season: 'Fall',
@@ -497,6 +499,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-08',
     endDate: '2026-11-08',
     duration: '1-Day',
+    registrationOpenDate: '2026-09-27',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play',
     season: 'Fall'
@@ -526,6 +529,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-14',
     endDate: '2026-11-14',
     duration: '1-Day',
+    registrationOpenDate: '2026-10-03',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play',
     season: 'Fall'
@@ -540,8 +544,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-14',
     endDate: '2026-11-15',
     duration: '2-Day',
+    entryFee: 180,
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play',
+    notes: 'Easley SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -555,9 +561,10 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-22',
     duration: '2-Day',
+    registrationOpenDate: '2026-09-24',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Major Championship',
-    notes: 'Celebrating 30 years of the Players Championship.',
+    notes: 'Celebrating 30 years of the Players Championship. CONFLICT: Family PR trip Nov 22-26.',
     season: 'Fall',
     isMajor: true
   },
@@ -571,6 +578,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-21',
     duration: '1-Day',
+    registrationOpenDate: '2026-10-10',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '18-Hole Stroke Play (Florence)',
     season: 'Fall'
@@ -585,9 +593,51 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-21',
     endDate: '2026-11-22',
     duration: '2-Day',
+    registrationOpenDate: '2026-09-28',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play',
+    notes: 'Loris SC.',
     season: 'Fall',
+    isMajor: true
+  },
+
+  // =========================================================================
+  // 3. HJGT TOURNAMENT
+  // =========================================================================
+  {
+    id: 'hjgt-2026-11-14-15-unc-finley',
+    name: 'HJGT College Prep @ UNC Finley',
+    tour: 'OTHER',
+    tourSeries: 'HJGT',
+    courseId: 'unc-finley',
+    course: COURSES['unc-finley'],
+    startDate: '2026-11-14',
+    endDate: '2026-11-15',
+    duration: '2-Day',
+    playerRegistrations: { 'player-owen': 'considering' },
+    yardageOrFormat: 'College Prep - 36 Holes',
+    notes: 'Hold - do not register (Maxim decision). Chapel Hill NC.',
+    season: 'Fall'
+  },
+
+  // =========================================================================
+  // 4. DECEMBER SCJGA TOURNAMENTS
+  // =========================================================================
+  {
+    id: 'scjga-2026-12-05-06-hootie-all-stars',
+    name: 'Hootie All Stars',
+    tour: 'SCJGA',
+    tourSeries: 'Major Championship',
+    courseId: 'palmetto-dunes-arthur-hills',
+    course: COURSES['palmetto-dunes-arthur-hills'],
+    startDate: '2026-12-05',
+    endDate: '2026-12-06',
+    duration: '2-Day',
+    registrationOpenDate: '2026-10-01',
+    playerRegistrations: { 'player-owen': 'open' },
+    yardageOrFormat: '36-Hole Championship',
+    notes: 'Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
+    season: 'Winter',
     isMajor: true
   },
   {
@@ -600,8 +650,26 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-12-12',
     endDate: '2026-12-13',
     duration: '2-Day',
+    registrationOpenDate: '2026-10-13',
     playerRegistrations: { 'player-owen': 'open' },
     yardageOrFormat: '36-Hole Stroke Play (Bluffton)',
+    season: 'Winter',
+    isMajor: true
+  },
+  {
+    id: 'scjga-2026-12-21-22-ford-picard',
+    name: 'Ford-Picard Christmas Classic',
+    tour: 'SCJGA',
+    tourSeries: 'Major Championship',
+    courseId: 'wild-dunes',
+    course: COURSES['wild-dunes'],
+    startDate: '2026-12-21',
+    endDate: '2026-12-22',
+    duration: '2-Day',
+    registrationOpenDate: '2026-10-19',
+    playerRegistrations: { 'player-owen': 'open' },
+    yardageOrFormat: '36-Hole Christmas Classic',
+    notes: 'Wild Dunes Resort, Isle of Palms.',
     season: 'Winter',
     isMajor: true
   }
