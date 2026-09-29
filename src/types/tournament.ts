@@ -9,7 +9,10 @@ export type RegistrationStatus =
   | 'open' 
   | 'waitlist' 
   | 'closed' 
-  | 'not_registered';
+  | 'not_registered'
+  | 'planned'
+  | 'cancel_pending'
+  | 'skipped';
 
 export interface Player {
   id: string;
@@ -98,7 +101,7 @@ export type DatePreset =
   | 'NEXT_MONTH' 
   | 'CUSTOM';
 
-export type FilterRegistrationStatus = 'registered' | 'contingent' | 'considering' | 'not_registered';
+export type FilterRegistrationStatus = 'registered' | 'contingent' | 'considering' | 'not_registered' | 'planned' | 'cancel_pending' | 'skipped';
 
 export type SortOption = 'date' | 'deadline' | 'distance';
 
