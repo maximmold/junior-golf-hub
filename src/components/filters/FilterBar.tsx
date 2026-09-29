@@ -279,6 +279,48 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <span>⛳ Open</span>
               {isOpenActive && <Check className="w-3 h-3 text-slate-300" />}
             </button>
+
+            {/* 📋 Planned */}
+            <button
+              onClick={() => toggleStatus('planned')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                selectedStatuses.includes('planned')
+                  ? 'bg-blue-600 text-white shadow-md ring-1 ring-blue-400'
+                  : 'text-blue-400 hover:bg-blue-950/40 hover:text-blue-300'
+              }`}
+              title="Click to toggle Planned tournaments"
+            >
+              <span>📋 Planned</span>
+              {selectedStatuses.includes('planned') && <Check className="w-3 h-3 text-white" />}
+            </button>
+
+            {/* 🚫 Cancel Pending */}
+            <button
+              onClick={() => toggleStatus('cancel_pending')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                selectedStatuses.includes('cancel_pending')
+                  ? 'bg-rose-600 text-white shadow-md ring-1 ring-rose-400'
+                  : 'text-rose-400 hover:bg-rose-950/40 hover:text-rose-300'
+              }`}
+              title="Click to toggle Cancel Pending tournaments"
+            >
+              <span>🚫 Cancelling</span>
+              {selectedStatuses.includes('cancel_pending') && <Check className="w-3 h-3 text-white" />}
+            </button>
+
+            {/* ⊘ Skipped */}
+            <button
+              onClick={() => toggleStatus('skipped')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                selectedStatuses.includes('skipped')
+                  ? 'bg-slate-600 text-slate-200 shadow-md ring-1 ring-slate-400'
+                  : 'text-slate-500 hover:bg-slate-800 hover:text-slate-300'
+              }`}
+              title="Click to toggle Skipped tournaments"
+            >
+              <span>⊘ Skipped</span>
+              {selectedStatuses.includes('skipped') && <Check className="w-3 h-3 text-slate-300" />}
+            </button>
           </div>
 
           {/* 4. Date Range Presets */}

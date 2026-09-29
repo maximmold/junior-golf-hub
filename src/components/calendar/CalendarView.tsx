@@ -366,13 +366,16 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                     const isUSKG = t.tour === 'USKG';
                     const playerStatus = 
                       selectedPlayerId === 'ALL'
-                        ? Object.values(t.playerRegistrations).find(s => s === 'registered' || s === 'contingent' || s === 'waitlist') || 'not_registered'
+                        ? Object.values(t.playerRegistrations).find(s => s === 'registered' || s === 'contingent' || s === 'waitlist' || s === 'planned' || s === 'cancel_pending') || 'not_registered'
                         : t.playerRegistrations[selectedPlayerId] || 'not_registered';
 
                     const isSignedUp = playerStatus === 'registered';
                     const isContingent = playerStatus === 'contingent';
                     const isWaitlist = playerStatus === 'waitlist';
                     const isConsidering = playerStatus === 'considering';
+                    const isPlanned = playerStatus === 'planned';
+                    const isCancelPending = playerStatus === 'cancel_pending';
+                    const isSkipped = playerStatus === 'skipped';
 
                     const isMultiDay = t.duration === '2-Day';
 
@@ -384,6 +387,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                       statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-orange-500/30 text-orange-200 border border-orange-400/50">🔶 Pending</span>;
                     } else if (isWaitlist) {
                       statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200 border border-purple-400/50">⏳ Waitlist</span>;
+                    } else if (isPlanned) {
+                      statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-blue-500/30 text-blue-200 border border-blue-400/50">📋 Planned</span>;
+                    } else if (isCancelPending) {
+                      statusBadge = <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 border border-rose-400/50">🚫 Cancelling</span>;
+                    } else if (isSkipped) {
+                      statusBadge = <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-700/20 text-slate-500 border border-slate-600/30">⊘ Skipped</span>;
                     }
 
                     return (
@@ -397,6 +406,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                             ? 'bg-orange-950/60 text-orange-200 border-orange-500/70 hover:border-orange-400 hover:bg-orange-950/80'
                             : isWaitlist
                             ? 'bg-purple-950/60 text-purple-200 border-purple-500/70 hover:border-purple-400 hover:bg-purple-950/80'
+                            : isPlanned
+                            ? 'bg-blue-950/60 text-blue-200 border-blue-500/70 hover:border-blue-400 hover:bg-blue-950/80'
+                            : isCancelPending
+                            ? 'bg-rose-950/60 text-rose-200 border-rose-500/70 hover:border-rose-400 hover:bg-rose-950/80'
+                            : isSkipped
+                            ? 'bg-slate-900/40 text-slate-500 border-slate-700/40 hover:border-slate-600'
                             : isUSKG
                             ? 'bg-emerald-950/60 text-emerald-300 border-emerald-700/50 hover:border-emerald-500'
                             : 'bg-blue-950/60 text-blue-300 border-blue-700/50 hover:border-blue-500'

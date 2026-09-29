@@ -128,7 +128,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: 'Local Tour Championship - Double Priority Points',
-    notes: 'Late fee $15 Oct 14 - Oct 15. All registrations close Oct 15. Tour Championship awards following play.',
+    notes: 'Active Sep 28. Late fee $15 Oct 14 - Oct 15. All registrations close Oct 15. Tour Championship awards following play.',
     season: 'Fall',
     isTourChampionship: true,
     isMajor: true
@@ -336,7 +336,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'registered',
     },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Active - payment approved Sep 18 (live BlueGolf verified Sep 22). Practice tip: call club (803) 345-9909. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
+    notes: 'Active - payment approved Sep 18 (live BlueGolf verified Sep 22, reconfirmed Sep 28). Practice tip: call club (803) 345-9909. Conflict with Village Greens Oct 4 is moot as VG was withdrawn.',
     season: 'Fall',
     isMajor: true
   },
@@ -377,7 +377,7 @@ export const SEED_TOURNAMENTS: Tournament[] = [
       'player-owen': 'contingent',
     },
     yardageOrFormat: '36-Hole Junior Championship - Boys 13-15',
-    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-15 division. Cobb\'s Glen CC, Anderson SC.',
+    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Registration closed Sep 28. Boys 13-15 division. Cobb\'s Glen CC, Anderson SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -449,9 +449,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-09-12',
     registrationDeadline: '2026-10-01',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26116/index.htm',
-    playerRegistrations: { 'player-owen': 'contingent' },
+    playerRegistrations: { 'player-owen': 'cancel_pending' },
     yardageOrFormat: '18-Hole Stroke Play - Boys 13-19',
-    notes: 'Pending Eligibility Approval (live BlueGolf verified Sep 22). Boys 13-19 division. Still backup vs Rick Vieth. Keeping both this and Rick Vieth (Oct 24-25) as backup until one is accepted. Same Sat conflict flagged.',
+    notes: 'Cancellation requested Sep 28, awaiting approval. Boys 13-19 division. Was backup vs Rick Vieth.',
     season: 'Fall'
   },
   {
@@ -506,8 +506,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-09-04',
     registrationDeadline: '2026-10-19',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2625/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'considering' },
     yardageOrFormat: 'Qualifier',
+    notes: 'Undecided as of Sep 28.',
     season: 'Fall'
   },
   {
@@ -524,8 +525,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-09-04',
     registrationDeadline: '2026-10-19',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga2626/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'considering' },
     yardageOrFormat: '36-Hole Fall Challenge',
+    notes: 'Undecided as of Sep 28.',
     season: 'Fall',
     isMajor: true
   },
@@ -542,8 +544,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-09-27',
     registrationDeadline: '2026-10-25',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26114/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'contingent' },
     yardageOrFormat: '18-Hole Stroke Play',
+    notes: 'Registered Sep 28, pending approval. Lancaster SC.',
     season: 'Fall'
   },
   {
@@ -577,8 +580,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-10-03',
     registrationDeadline: '2026-10-31',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26115/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'skipped' },
     yardageOrFormat: '18-Hole Stroke Play',
+    notes: 'Owen is not playing. Conflicts with Southern Oaks Players Series.',
     season: 'Fall'
   },
   {
@@ -595,9 +599,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-09-18',
     registrationDeadline: '2026-11-02',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga268/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'registered' },
     yardageOrFormat: '36-Hole Stroke Play',
-    notes: 'Easley SC.',
+    notes: 'Registered Sep 28. Easley SC.',
     season: 'Fall',
     isMajor: true
   },
@@ -670,9 +674,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     startDate: '2026-11-14',
     endDate: '2026-11-15',
     duration: '2-Day',
-    playerRegistrations: { 'player-owen': 'considering' },
+    playerRegistrations: { 'player-owen': 'skipped' },
     yardageOrFormat: 'College Prep - 36 Holes',
-    notes: 'Hold - do not register (Maxim decision). Chapel Hill NC.',
+    notes: 'Skipped - conflicts with Southern Oaks Players Series. Chapel Hill NC.',
     season: 'Fall'
   },
 
@@ -692,9 +696,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-10-01',
     registrationDeadline: '2026-11-15',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26123/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'planned' },
     yardageOrFormat: '36-Hole Championship',
-    notes: 'Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
+    notes: 'Planned - Owen intends to register (signup opens Oct 1). Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
     season: 'Winter',
     isMajor: true
   },
@@ -711,8 +715,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationOpenDate: '2026-10-13',
     registrationDeadline: '2026-11-23',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga269/index.htm',
-    playerRegistrations: { 'player-owen': 'open' },
+    playerRegistrations: { 'player-owen': 'planned' },
     yardageOrFormat: '36-Hole Stroke Play (Bluffton)',
+    notes: 'Planned - Owen intends to register (signup opens Oct 13).',
     season: 'Winter',
     isMajor: true
   },
