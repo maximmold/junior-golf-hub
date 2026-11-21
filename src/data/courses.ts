@@ -498,6 +498,21 @@ export const COURSES: Record<string, Course> = {
     holes: 18,
     par: 72,
     facilityType: 'Public'
+  },
+  'westcott-plantation': {
+    id: 'westcott-plantation',
+    name: 'Westcott Plantation Golf Club',
+    address: '5327 Westcott Blvd',
+    city: 'Summerville',
+    state: 'SC',
+    zip: '29485',
+    lat: 33.0045,
+    lng: -80.2145,
+    phone: '(843) 851-1925',
+    website: 'https://westcottplantation.com',
+    holes: 18,
+    par: 72,
+    facilityType: 'Public'
   }
 };
 
