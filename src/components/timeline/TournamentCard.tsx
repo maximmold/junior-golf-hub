@@ -279,6 +279,9 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
             const isReg = status === 'registered';
             const isCont = status === 'contingent';
             const isCons = status === 'considering';
+            const isPlanned = status === 'planned';
+            const isCancelPending = status === 'cancel_pending';
+            const isSkipped = status === 'skipped';
 
             return (
               <div 
@@ -288,6 +291,12 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
                     ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/60 shadow-sm'
                     : isCont
                     ? 'bg-orange-950/80 text-orange-300 border-orange-500/60 shadow-sm'
+                    : isPlanned
+                    ? 'bg-blue-950/80 text-blue-300 border-blue-500/60 shadow-sm'
+                    : isCancelPending
+                    ? 'bg-rose-950/80 text-rose-300 border-rose-500/60 shadow-sm'
+                    : isSkipped
+                    ? 'bg-slate-900/50 text-slate-500 border-slate-700/40'
                     : isCons
                     ? 'bg-amber-950/80 text-amber-300 border-amber-500/60'
                     : 'bg-slate-950/50 text-slate-400 border-slate-800'
@@ -296,7 +305,7 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
                 <span>{p.name.split(' ')[0]}:</span>
                 <span className="font-bold">
-                  {isReg ? '⭐ Signed Up' : isCont ? '🔶 Contingent' : isCons ? '💡 Considering' : 'Available'}
+                  {isReg ? '⭐ Signed Up' : isCont ? '🔶 Contingent' : isPlanned ? '📋 Planned' : isCancelPending ? '🚫 Cancelling' : isSkipped ? '⊘ Skipped' : isCons ? '💡 Considering' : 'Available'}
                 </span>
               </div>
             );
