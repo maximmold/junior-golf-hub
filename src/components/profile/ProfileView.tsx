@@ -6,7 +6,8 @@ import {
   Calendar, 
   Award,
   Star,
-  Target
+  Target,
+  CalendarDays
 } from 'lucide-react';
 import {
   PROFILE_HEADER,
@@ -17,11 +18,32 @@ import {
   STATS,
   SOURCES_NOTE
 } from '../../data/playerProfile';
+import { HeroCarousel } from './HeroCarousel';
 
-export const ProfileView: React.FC = () => {
+interface ProfileViewProps {
+  onNavigateToSchedule?: () => void;
+}
+
+export const ProfileView: React.FC<ProfileViewProps> = ({ onNavigateToSchedule }) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-6 overflow-x-hidden">
       
+      {/* Navigate to Schedule Button */}
+      {onNavigateToSchedule && (
+        <div className="flex justify-center sm:justify-end">
+          <button
+            onClick={onNavigateToSchedule}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg transition-all"
+          >
+            <CalendarDays className="w-4 h-4" />
+            <span>View Tournament Schedule</span>
+          </button>
+        </div>
+      )}
+
+      {/* Hero Carousel */}
+      <HeroCarousel />
+
       {/* Header Card */}
       <div className="bg-gradient-to-br from-emerald-950 to-slate-950 border border-emerald-800/50 rounded-3xl p-6 sm:p-8 shadow-2xl">
         <div className="flex items-start gap-4">
