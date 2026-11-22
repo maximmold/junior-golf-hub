@@ -10,7 +10,8 @@ import {
   Plus, 
   Download, 
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  User
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -111,6 +112,17 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <MapIcon className="w-3.5 h-3.5" />
               Course Map & ETA
+            </button>
+            <button
+              onClick={() => setViewMode('profile')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                viewMode === 'profile'
+                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/40'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              Profile
             </button>
           </div>
 
@@ -253,6 +265,15 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <MapIcon className="w-3.5 h-3.5" />
             Map & ETA
+          </button>
+          <button
+            onClick={() => setViewMode('profile')}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md ${
+              viewMode === 'profile' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-400'
+            }`}
+          >
+            <User className="w-3.5 h-3.5" />
+            Profile
           </button>
         </div>
       </div>

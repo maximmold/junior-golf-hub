@@ -121,6 +121,6 @@ export interface FilterState {
   sortBy?: SortOption; // 'date' (default) | 'deadline' | 'distance'
 }
 
-export type ViewMode = 'timeline' | 'calendar' | 'map' | 'players' | 'ingest';
+export type ViewMode = 'timeline' | 'calendar' | 'map' | 'players' | 'ingest' | 'profile';
 
 export type SignupDateDisplay = 'both' | 'start' | 'end' | 'none';

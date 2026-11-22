@@ -13,6 +13,7 @@ import { FilterBar } from './components/filters/FilterBar';
 import { TimelineView } from './components/timeline/TimelineView';
 import { CalendarView } from './components/calendar/CalendarView';
 import { TournamentMap } from './components/map/TournamentMap';
+import { ProfileView } from './components/profile/ProfileView';
 
 // Modals & Drawers
 import { LocationModal } from './components/location/LocationModal';
@@ -206,6 +207,10 @@ export function App() {
             setFilters={setFilters}
             onSelectTournament={(t) => setSelectedTournament(t)}
           />
+        )}
+
+        {viewMode === 'profile' && (
+          <ProfileView />
         )}
 
       </main>
