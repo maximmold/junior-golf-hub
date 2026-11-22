@@ -34,8 +34,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   userLocation,
   onSelectTournament,
 }) => {
-  // Default calendar month: start at August 2026 or current month
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 7, 1)); // August 2026
+  // Default calendar month: start at current month
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   
   // Signup date display filter: 'both' (default), 'start', 'end', 'none'
   const [signupDateDisplay, setSignupDateDisplay] = useState<SignupDateDisplay>('both');

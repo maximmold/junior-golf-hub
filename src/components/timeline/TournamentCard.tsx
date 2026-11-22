@@ -373,6 +373,20 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
             <CalendarPlus className="w-4 h-4" />
           </button>
 
+          {/* Official Event Page Link */}
+          {tournament.officialUrl && (
+            <a
+              href={tournament.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white border border-blue-500 transition-all flex items-center gap-1 shadow-md"
+              title={isUSKG ? "Official tour page" : "Official event page"}
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isUSKG ? 'Tour page' : 'Event page'}</span>
+            </a>
+          )}
+
         </div>
       </div>
 

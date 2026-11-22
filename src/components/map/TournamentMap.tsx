@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Tournament, UserLocation, Player, FilterState, DatePreset } from '../../types/tournament';
 import { calculateDistanceAndETA } from '../../services/distanceService';
 import L from 'leaflet';
@@ -30,6 +30,31 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const tileErrorCountRef = useRef<number>(0);
   const hasFailedOverRef = useRef<boolean>(false);
+
+  // Get available months from tournaments (current month and future only)
+  const availableMonths = useMemo(() => {
+    const today = new Date();
+    const currentYearMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    
+    const monthsSet = new Set<string>();
+    tournaments.forEach(t => {
+      const startMonth = t.startDate.substring(0, 7); // YYYY-MM
+      if (startMonth >= currentYearMonth) {
+        monthsSet.add(startMonth);
+      }
+    });
+    
+    return Array.from(monthsSet).sort().map(month => {
+      const [year, monthNum] = month.split('-');
+      const date = new Date(parseInt(year), parseInt(monthNum) - 1);
+      const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+      const yearShort = year.substring(2); // Last 2 digits
+      return {
+        value: month,
+        label: `${monthName} '${yearShort}`
+      };
+    });
+  }, [tournaments]);
 
   // Initialize Map
   useEffect(() => {
@@ -239,6 +264,17 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
             Apple Maps
           </a>
         </div>
+        ${t.officialUrl ? `
+        <a 
+          href="${t.officialUrl}" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="w-full mt-2 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold py-1 px-2 rounded text-center transition-colors shadow-sm flex items-center justify-center gap-1"
+        >
+          <span>🔗</span>
+          <span>${isUSKG ? 'Official tour page' : 'Official event page'}</span>
+        </a>
+        ` : ''}
         <button 
           id="btn-details-${t.id}"
           class="w-full mt-2 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold py-1 px-2 rounded text-center transition-colors shadow-sm"
@@ -377,46 +413,19 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
             >
               30 Days
             </button>
-            <button
-              onClick={() => handleSetMonth('2026-08')}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                filters.selectedMonth === '2026-08'
-                  ? 'bg-teal-600 text-white shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-              }`}
-            >
-              Aug '26
-            </button>
-            <button
-              onClick={() => handleSetMonth('2026-09')}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                filters.selectedMonth === '2026-09'
-                  ? 'bg-teal-600 text-white shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-              }`}
-            >
-              Sep '26
-            </button>
-            <button
-              onClick={() => handleSetMonth('2026-10')}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                filters.selectedMonth === '2026-10'
-                  ? 'bg-teal-600 text-white shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-              }`}
-            >
-              Oct '26
-            </button>
-            <button
-              onClick={() => handleSetMonth('2026-11')}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                filters.selectedMonth === '2026-11'
-                  ? 'bg-teal-600 text-white shadow-md'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-              }`}
-            >
-              Nov '26
-            </button>
+            {availableMonths.map(month => (
+              <button
+                key={month.value}
+                onClick={() => handleSetMonth(month.value)}
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  filters.selectedMonth === month.value
+                    ? 'bg-teal-600 text-white shadow-md'
+                    : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                }`}
+              >
+                {month.label}
+              </button>
+            ))}
             <button
               onClick={() => setShowCustomDates((prev) => !prev)}
               className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${

@@ -574,6 +574,18 @@ export const TournamentDrawer: React.FC<TournamentDrawerProps> = ({
               <ExternalLink className="w-4 h-4" />
             </a>
           )}
+          
+          {tournament.officialUrl && (
+            <a
+              href={tournament.officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-950/60 transition-all flex items-center justify-center gap-1.5"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>{isUSKG ? 'Official tour page' : 'Official event page'}</span>
+            </a>
+          )}
 
         </div>
 
