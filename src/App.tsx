@@ -23,7 +23,7 @@ import { AddTournamentModal } from './components/tournament/AddTournamentModal';
 import { TournamentDrawer } from './components/details/TournamentDrawer';
 
 export function App() {
-  const [viewMode, setViewMode] = useState<ViewMode>('timeline');
+  const [viewMode, setViewMode] = useState<ViewMode>('profile');
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
 
   // Modal open states
@@ -140,29 +140,33 @@ export function App() {
       {/* Main Content Area */}
       <main className="flex-1">
         
-        {/* Quick Stats Bar */}
-        <StatsBar
-          totalUpcoming={stats.totalUpcoming}
-          registeredCount={stats.registeredCount}
-          contingentCount={stats.contingentCount}
-          consideringCount={stats.consideringCount}
-          totalRegisteredMiles={stats.totalRegisteredRoundtripMiles}
-          nextTournament={stats.nextTournament}
-          nextTournamentETA={nextTournamentETA}
-          nextSignup={stats.nextSignup}
-          onSelectTournament={(t) => setSelectedTournament(t)}
-          onFilterSignedUpOnly={handleFilterSignedUpOnly}
-          onFilterContingentOnly={handleFilterContingentOnly}
-        />
+        {/* Quick Stats Bar - hidden on Profile view */}
+        {viewMode !== 'profile' && (
+          <StatsBar
+            totalUpcoming={stats.totalUpcoming}
+            registeredCount={stats.registeredCount}
+            contingentCount={stats.contingentCount}
+            consideringCount={stats.consideringCount}
+            totalRegisteredMiles={stats.totalRegisteredRoundtripMiles}
+            nextTournament={stats.nextTournament}
+            nextTournamentETA={nextTournamentETA}
+            nextSignup={stats.nextSignup}
+            onSelectTournament={(t) => setSelectedTournament(t)}
+            onFilterSignedUpOnly={handleFilterSignedUpOnly}
+            onFilterContingentOnly={handleFilterContingentOnly}
+          />
+        )}
 
-        {/* Global Filter Bar */}
-        <FilterBar
-          filters={filters}
-          setFilters={setFilters}
-          totalMatches={filteredTournaments.length}
-          totalTotal={tournaments.length}
-          tournaments={tournaments}
-        />
+        {/* Global Filter Bar - hidden on Profile view */}
+        {viewMode !== 'profile' && (
+          <FilterBar
+            filters={filters}
+            setFilters={setFilters}
+            totalMatches={filteredTournaments.length}
+            totalTotal={tournaments.length}
+            tournaments={tournaments}
+          />
+        )}
 
         {/* View Component Switcher */}
         {viewMode === 'timeline' && (
@@ -210,7 +214,7 @@ export function App() {
         )}
 
         {viewMode === 'profile' && (
-          <ProfileView />
+          <ProfileView onNavigateToSchedule={() => setViewMode('timeline')} />
         )}
 
       </main>
