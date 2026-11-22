@@ -27,6 +27,9 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const radiusLayerRef = useRef<L.LayerGroup | null>(null);
+  const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const tileErrorCountRef = useRef<number>(0);
+  const hasFailedOverRef = useRef<boolean>(false);
 
   // Initialize Map
   useEffect(() => {
@@ -41,11 +44,31 @@ export const TournamentMap: React.FC<TournamentMapProps> = ({
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      // Dark / Modern CartoDB Dark Matter tile layer
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+      // Primary: Keyless OpenStreetMap Standard tiles
+      const primaryTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
-      }).addTo(map);
+      });
+
+      // Fallback tile layer (OpenTopoMap - also keyless)
+      const fallbackTileLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | &copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
+        maxZoom: 17,
+      });
+
+      // Monitor tile loading errors and switch to fallback after 3+ failures
+      primaryTileLayer.on('tileerror', () => {
+        tileErrorCountRef.current += 1;
+        if (tileErrorCountRef.current >= 3 && !hasFailedOverRef.current && mapInstanceRef.current) {
+          console.warn('OpenStreetMap tiles failed 3+ times, switching to fallback (OpenTopoMap)');
+          hasFailedOverRef.current = true;
+          mapInstanceRef.current.removeLayer(primaryTileLayer);
+          fallbackTileLayer.addTo(mapInstanceRef.current);
+        }
+      });
+
+      primaryTileLayer.addTo(map);
+      tileLayerRef.current = primaryTileLayer;
 
       markersLayerRef.current = L.layerGroup().addTo(map);
       radiusLayerRef.current = L.layerGroup().addTo(map);
