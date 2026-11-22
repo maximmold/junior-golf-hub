@@ -56,6 +56,7 @@ export interface Tournament {
   registrationOpenDate?: string; // ISO format: YYYY-MM-DD - when signup opens
   registrationDeadline?: string; // ISO format: YYYY-MM-DD - when signup closes
   registrationUrl?: string;
+  officialUrl?: string; // Link to official event or tour page (BlueGolf for SCJGA, USKG tour page for USKG)
   playerRegistrations: Record<string, RegistrationStatus>; // playerId -> RegistrationStatus
   playerTeeTimes?: Record<string, string>; // playerId -> "10:54" or "10:54 AM"
   notes?: string;

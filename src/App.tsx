@@ -160,6 +160,7 @@ export function App() {
           setFilters={setFilters}
           totalMatches={filteredTournaments.length}
           totalTotal={tournaments.length}
+          tournaments={tournaments}
         />
 
         {/* View Component Switcher */}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { FilterState, FilterRegistrationStatus } from '../../types/tournament';
+import React, { useMemo } from 'react';
+import { FilterState, FilterRegistrationStatus, Tournament } from '../../types/tournament';
 import { Search, RotateCcw, Calendar, Clock, Check, Sparkles, Filter } from 'lucide-react';
 
 interface FilterBarProps {
@@ -7,6 +7,7 @@ interface FilterBarProps {
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   totalMatches: number;
   totalTotal: number;
+  tournaments: Tournament[];
 }
 
 export const FilterBar: React.FC<FilterBarProps> = ({
@@ -14,8 +15,34 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   setFilters,
   totalMatches,
   totalTotal,
+  tournaments,
 }) => {
   const selectedStatuses = filters.selectedStatuses || [];
+
+  // Get available months from tournaments (current month and future only)
+  const availableMonths = useMemo(() => {
+    const today = new Date();
+    const currentYearMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    
+    const monthsSet = new Set<string>();
+    tournaments.forEach(t => {
+      const startMonth = t.startDate.substring(0, 7); // YYYY-MM
+      if (startMonth >= currentYearMonth) {
+        monthsSet.add(startMonth);
+      }
+    });
+    
+    return Array.from(monthsSet).sort().map(month => {
+      const [year, monthNum] = month.split('-');
+      const date = new Date(parseInt(year), parseInt(monthNum) - 1);
+      const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+      const yearShort = year.substring(2); // Last 2 digits
+      return {
+        value: month,
+        label: `${monthName} '${yearShort}`
+      };
+    });
+  }, [tournaments]);
 
   const isFiltered =
     filters.tour !== 'ALL' ||
@@ -369,46 +396,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             >
               30D
             </button>
-            <button
-              onClick={() => setFilters((prev) => ({ ...prev, selectedMonth: '2026-08', datePreset: undefined, startDate: undefined, endDate: undefined }))}
-              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
-                filters.selectedMonth === '2026-08'
-                  ? 'bg-teal-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:bg-teal-950/40'
-              }`}
-            >
-              Aug
-            </button>
-            <button
-              onClick={() => setFilters((prev) => ({ ...prev, selectedMonth: '2026-09', datePreset: undefined, startDate: undefined, endDate: undefined }))}
-              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
-                filters.selectedMonth === '2026-09'
-                  ? 'bg-teal-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:bg-teal-950/40'
-              }`}
-            >
-              Sep
-            </button>
-            <button
-              onClick={() => setFilters((prev) => ({ ...prev, selectedMonth: '2026-10', datePreset: undefined, startDate: undefined, endDate: undefined }))}
-              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
-                filters.selectedMonth === '2026-10'
-                  ? 'bg-teal-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:bg-teal-950/40'
-              }`}
-            >
-              Oct
-            </button>
-            <button
-              onClick={() => setFilters((prev) => ({ ...prev, selectedMonth: '2026-11', datePreset: undefined, startDate: undefined, endDate: undefined }))}
-              className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
-                filters.selectedMonth === '2026-11'
-                  ? 'bg-teal-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:bg-teal-950/40'
-              }`}
-            >
-              Nov
-            </button>
+            {availableMonths.map(month => (
+              <button
+                key={month.value}
+                onClick={() => setFilters((prev) => ({ ...prev, selectedMonth: month.value, datePreset: undefined, startDate: undefined, endDate: undefined }))}
+                className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all ${
+                  filters.selectedMonth === month.value
+                    ? 'bg-teal-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:bg-teal-950/40'
+                }`}
+              >
+                {month.label}
+              </button>
+            ))}
           </div>
 
           {/* 5. Sort By Option */}
