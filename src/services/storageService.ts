@@ -3,10 +3,10 @@ import { SEED_TOURNAMENTS, DEFAULT_PLAYERS } from '../data/seedTournaments';
 import { DEFAULT_USER_LOCATIONS } from '../data/courses';
 
 const STORAGE_KEYS = {
-  TOURNAMENTS: 'charleston_golf_tournaments_v22',
-  PLAYERS: 'charleston_golf_players_v22',
-  USER_LOCATION: 'charleston_golf_location_v22',
-  FILTERS: 'charleston_golf_filters_v22',
+  TOURNAMENTS: 'charleston_golf_tournaments_v23',
+  PLAYERS: 'charleston_golf_players_v23',
+  USER_LOCATION: 'charleston_golf_location_v23',
+  FILTERS: 'charleston_golf_filters_v23',
 };
 
 export const DEFAULT_LOCATION: UserLocation = {

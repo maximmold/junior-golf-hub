@@ -113,9 +113,9 @@ export const SEED_TOURNAMENTS: Tournament[] = [
     registrationDeadline: '2026-11-23',
     registrationUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26123/index.htm',
     officialUrl: 'https://scjga.bluegolf.com/bluegolf/scjga26/event/scjga26123/index.htm',
-    playerRegistrations: { 'player-owen': 'contingent' },
+    playerRegistrations: { 'player-owen': 'registered' },
     yardageOrFormat: '18-holer boys/girls divisions',
-    notes: 'Registered, approval pending. Acceptance is by Hootie ranking after the deadline. Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
+    notes: 'Accepted! Palmetto Dunes Arthur Hills Course, Hilton Head Island.',
     season: 'Winter',
     isMajor: true
   },
